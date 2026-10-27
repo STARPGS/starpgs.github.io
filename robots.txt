@@ -1,0 +1,65 @@
+# OpenAI
+User-agent: GPTBot
+Disallow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Disallow: /
+
+# Google
+User-agent: Google-Extended
+Disallow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Disallow: /
+
+# Common Crawl (feeds many LLM training sets)
+User-agent: CCBot
+Disallow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Disallow: /
+
+# ByteDance (TikTok parent, powers Doubao and other models)
+User-agent: Bytespider
+Disallow: /
+
+# Meta AI
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+# Cohere
+User-agent: Coherebot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: cohere-training-data-crawler
+Disallow: /
+
+# Amazon
+User-agent: Amazonbot
+Disallow: /
+
+# Mistral AI
+User-agent: MistralBot
+Disallow: /
+
+# Allen Institute AI
+User-agent: AI2Bot
+Disallow: /
+
+# Wayback Machine
+User-agent: ia_archiver
+Disallow: /
+
+# General AI training prohibition intention
+User-Agent: *
+Content-signal: search=yes, ai-train=no, use=reference
+Allow: /
