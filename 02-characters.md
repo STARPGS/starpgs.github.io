@@ -5,10 +5,18 @@ permalink: /characters
 text_align: left
 ---
 
+## A life that is serene
+
 "Look at this page. It can't be made up, right? Because if it's real, then I'm not imagining everything. But if it is real, then something is very wrong."
+
+## A life that is pure
 
 "I keep telling myself I can rectify this. Should I fail, then I'm merely... what I've always known I was. But if a way exists to balance this scale... I'll drag myself through."
 
+## A life that matters
+
 "This is what I've been searching for my entire life. The ultimate determinant of whether I ever legitimately existed."
+
+## A life that is mine
 
 "I once believed in a secret, but I finally realize now. Victory is illusory. The game is actually about deducing a tolerable way to lose."
