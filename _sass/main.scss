@@ -370,3 +370,97 @@ blockquote {
 }
 
 
+
+/* Navbar menu: blue-gray background, no extra frame */
+.navbar-menu.has-background-black {
+    color: #f2f5f8 !important;
+    background-color: #2a3747 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Dropdown parent: no frame of its own */
+.navbar-item.has-dropdown.is-hoverable {
+    color: #f2f5f8 !important;
+    background-color: transparent !important;
+}
+
+/* Single beveled frame around the dropdown */
+.navbar-dropdown.has-background-black.is-left {
+    color: #f2f5f8 !important;
+    background-color: #2a3747 !important;
+    border: 3px solid #d7e1ec !important;
+    border-radius: 4px !important;
+    box-shadow:
+        inset 0 0 0 2px #40546c,
+        0 0 0 2px #111821 !important;
+}
+
+/* Dropdown entries: no individual borders */
+.navbar-dropdown.has-background-black.is-left .navbar-item {
+    color: #f2f5f8 !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.navbar-dropdown.has-background-black.is-left .navbar-item:hover {
+    color: #ffffff !important;
+    background-color: #40546c !important;
+}
+
+/* Navbar link / dropdown trigger */
+.navbar-link {
+    color: #f2f5f8 !important;
+    background-color: #34465a !important;
+    border: 2px solid #d7e1ec !important;
+    border-radius: 3px !important;
+    box-shadow: inset 0 0 0 1px #40546c !important;
+}
+
+.navbar-link:hover {
+    color: #ffffff !important;
+    background-color: #40546c !important;
+}
+
+/* Credits, contact button, and blog card */
+.credits,
+.contact-button,
+.blog-card {
+    color: #f2f5f8 !important;
+    background-color: #34465a !important;
+    border: 3px solid #d7e1ec !important;
+    border-radius: 4px !important;
+    box-shadow:
+        inset 0 0 0 2px #40546c,
+        0 0 0 2px #111821 !important;
+}
+
+/* Blog card's inner areas can have their own Bulma backgrounds */
+.blog-card .card-content,
+.blog-card .content {
+    color: #f2f5f8 !important;
+    background-color: #34465a !important;
+}
+
+/* Keep text readable inside these sections */
+.credits *,
+.contact-button *,
+.blog-card *,
+.navbar-menu.has-background-black * {
+    color: #f2f5f8 !important;
+}
+
+/* Accent links inside the blog card */
+.blog-card a {
+    color: #b9d5ef !important;
+}
+
+/* Contact button hover */
+.contact-button:hover {
+    color: #ffffff !important;
+    background-color: #40546c !important;
+}
+
+
