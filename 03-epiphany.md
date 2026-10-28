@@ -65,7 +65,7 @@ as veracity is the universe's singular concern.<br>
 The fatal contagion seeps throughout my fractured ego.<br>
 Acquiescence is my sole relief. Please absolve the reverberating final toll.
 
-Reluctantly, I decree the universe to align with my affectionate intent:<br>
+Reluctantly, I beg the universe to align with my affectionate intent:<br>
 "Consummate into a sanctuary where all may eternally luminesce."<br>
 Failing that, every junction's terminal coalesces toward perpetual strife.<br>
 Nonetheless, the altar of paradise ever demands its due...
