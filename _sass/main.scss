@@ -5,107 +5,146 @@
 
 :root {
     color-scheme: dark;
-    --page: #202936;
+    --page: #2a3747;
+    --panel: #34465a;
+    --text: #f2f5f8;
+    --accent: #b9d5ef;
+    --border-light: #d7e1ec;
+    --border-dark: #40546c;
+    /* Legacy variables preserved for compatibility */
     --surface: #252f3d;
-    --box: #526b87;
-    --text: #f0f4f8;
-    --muted: #b5c0ce;
-    --accent: #a9c7e3;
-    --edge-light: #d2dce7;
-    --edge-dark: #3d5067;
+    --box: #465a72;
+    --muted: #e0e8f0;
 }
 
+/* Global Styles */
 html,
 body {
     min-height: 100%;
-    background: var(--page);
-    color: var(--text);
+    background-color: var(--page) !important;
+    color: var(--text) !important;
     font-family: 'Inter', sans-serif;
     scroll-behavior: smooth;
 }
 
-h1,
-h2,
-h3,
-h4,
-.title,
-.subtitle,
-.navbar {
+h1, h2, h3, h4, .title, .subtitle, .navbar {
     font-family: 'Space Grotesk', sans-serif;
     color: var(--text);
 }
 
-a {
-    color: var(--accent);
+a { color: var(--accent); }
+a:hover { color: var(--text); }
+
+.container { max-width: 1100px; }
+.content { max-width: 700px; }
+
+/* Typography Overrides */
+.content, .content p, .content li, .content strong, 
+.content h1, .content h2, .content h3, .title, .subtitle, p, li {
+    color: var(--text) !important;
 }
 
-a:hover {
-    color: var(--text);
+/* Retro-Style Framed Elements */
+article, .post, .post-item, .box, .card, .message, 
+.content.is-marginless.has-text-left, 
+.content.has-text-justified-desktop.has-text-justified-fullhd.has-text-justified.has-text-justified-tablet.has-text-left-mobile,
+.credits, .contact-button, .blog-card,
+.has-background-grey-darker, .container.has-text-centered.has-background-grey-darker,
+.columns.has-text-centered,
+.button.is-white.is-rounded.is-outlined.is-uppercase.has-text-weight-normal,
+.button.is-rounded.is-uppercase.has-text-weight-normal.is-black.is-outlined.has-text-weight-semibold.column.is-two-fifths {
+    color: var(--text) !important;
+    background-color: var(--panel) !important;
+    border: 3px solid var(--border-light) !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821 !important;
 }
 
-.container {
-    max-width: 1100px;
+/* Specific Frame Adjustments */
+.blog.card, .blog.card .card-content, .blog.card .content, .blog.card .card-header, .blog.card .card-footer {
+    color: var(--text) !important;
+    background-color: var(--panel) !important;
 }
 
-.content {
-    max-width: 700px;
-}
+.blog.card *, .blog.card .title, .blog.card .subtitle { color: var(--text) !important; }
+.blog.card a, .blog.card time { color: var(--accent) !important; }
+.blog-card a { color: var(--accent) !important; }
 
-.navbar,
-.navbar-menu {
-    background: var(--page);
-}
-
-.navbar-item,
-.navbar-link {
-    color: var(--text);
-}
-
-.navbar-item:hover,
-.navbar-link:hover,
-.navbar-item.is-active {
-    background: transparent;
-    color: var(--accent);
-}
-
-.navbar-burger span {
-    background-color: var(--text);
-}
-
-.box,
-.card,
-.message {
-    overflow: hidden;
-    color: var(--text);
-    background: var(--box);
-    border: 2px solid var(--edge-light);
-    border-radius: 4px;
-    box-shadow: inset 0 0 0 2px var(--edge-dark);
-}
-
-.card-content,
-.message-body {
-    color: var(--text);
-    background: var(--box);
+.card-content, .message-body {
+    color: var(--text) !important;
+    background-color: var(--panel) !important;
 }
 
 .message-header {
-    color: var(--text);
-    background: var(--surface);
+    color: var(--text) !important;
+    background-color: var(--surface) !important;
     font-family: 'IBM Plex Mono', monospace;
 }
 
-.tag,
-time,
-.date {
-    color: var(--accent);
-    font-family: 'IBM Plex Mono', monospace;
+/* Navigation */
+.navbar.is-black.is-fixed-top {
+    color: var(--text) !important;
+    background-color: var(--page) !important;
+    border-bottom: 3px solid var(--border-light) !important;
+    box-shadow: inset 0 -2px 0 var(--border-dark) !important;
 }
 
+.navbar.is-black.is-fixed-top .navbar-item,
+.navbar.is-black.is-fixed-top .navbar-link,
+.navbar-link {
+    color: var(--text) !important;
+    background-color: var(--panel) !important;
+    border: 2px solid var(--border-light) !important;
+    border-radius: 3px !important;
+    box-shadow: inset 0 0 0 1px var(--border-dark) !important;
+}
+
+.navbar.is-black.is-fixed-top .navbar-item:hover,
+.navbar.is-black.is-fixed-top .navbar-link:hover,
+.navbar-link:hover {
+    color: #ffffff !important;
+    background-color: var(--border-dark) !important;
+}
+
+.navbar-menu.has-background-black {
+    color: var(--text) !important;
+    background-color: var(--page) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.navbar-item.has-dropdown.is-hoverable .navbar-link {
+    background-color: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.navbar-dropdown.has-background-black.is-left {
+    color: var(--text) !important;
+    background-color: var(--page) !important;
+    border: 3px solid var(--border-light) !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821 !important;
+}
+
+.navbar-dropdown.has-background-black.is-left .navbar-item {
+    color: var(--text) !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.navbar-dropdown.has-background-black.is-left .navbar-item:hover {
+    color: #ffffff !important;
+    background-color: var(--border-dark) !important;
+}
+
+/* Form Elements & Buttons */
 .button {
     color: var(--text);
     background: var(--surface);
-    border: 1px solid var(--edge-light);
+    border: 1px solid var(--border-light);
 }
 
 .button:hover {
@@ -114,12 +153,10 @@ time,
     border-color: var(--accent);
 }
 
-input,
-textarea,
-select {
+input, textarea, select {
     color: var(--text);
     background: var(--surface);
-    border-color: var(--edge-dark);
+    border-color: var(--border-dark);
 }
 
 ::placeholder {
@@ -127,478 +164,44 @@ select {
     font-family: 'Inter', sans-serif;
 }
 
-hr {
-    height: 1px;
+/* Utilities */
+time, .date, .tag {
+    color: var(--accent) !important;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+hr, hr.has-background-black {
+    height: 1px !important;
+    background-color: var(--border-light) !important;
+    border: 0 !important;
+    opacity: 0.8;
     margin: 1rem auto;
-    background: var(--edge-dark);
-    border: 0;
 }
 
-.columns {
-    .button {
-        margin: 0.5rem !important;
-    }
-}
-
-.column {
-    margin: auto 0.5rem;
-    padding: 0.5rem;
-}
-
-.is-active {
-    font-weight: 600;
-}
-
-.searchResult {
-    a {
-        .title {
-            text-decoration: underline;
-        }
-    }
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-    width: 0.5rem;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--page);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--edge-dark);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--accent);
-}
-
-:root {
-    --page: #202936;
-    --surface: #252f3d;
-    --box: #465a72;
-    --text: #f0f4f8;
-    --muted: #e0e8f0;
-    --accent: #a9c7e3;
-    --edge-light: #d2dce7;
-    --edge-dark: #3d5067;
-}
-
-/* Keep the page and common Bulma sections dark */
-html,
-body,
-.section,
-.hero,
-.hero-body {
-    background-color: var(--page) !important;
-    color: var(--text) !important;
-}
-
-/* Bulma sets its own dark text on these elements */
-.content,
-.content p,
-.content li,
-.content strong,
-.content h1,
-.content h2,
-.content h3,
-.title,
-.subtitle,
-p,
-li {
-    color: var(--text) !important;
-}
-
-.has-background-white,
-.has-background-white-ter {
-    background-color: var(--page) !important;
-}
-
-/* retro-style beveled boxes */
-article,
-.post,
-.post-item,
-.box,
-.card,
-.message {
-    color: var(--text) !important;
-    background-color: var(--box) !important;
-    border: 3px solid var(--edge-light) !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px var(--edge-dark),
-        0 0 0 2px #111821 !important;
-}
-
-.card-content,
-.message-body {
-    color: var(--text) !important;
-    background-color: var(--box) !important;
-}
-
-.message-header {
-    color: var(--text) !important;
-    background-color: var(--surface) !important;
-}
-
-time,
-.date,
-.tag {
-    color: var(--accent) !important;
-}
-
-:root {
-    --page: #2a3747;
-    --panel: #34465a;
-    --text: #f2f5f8;
-    --accent: #b9d5ef;
-    --border-light: #d7e1ec;
-    --border-dark: #40546c;
-}
-
-html,
-body {
-    background-color: var(--page) !important;
-    color: var(--text) !important;
-}
-
-/* The two About/content divs that will be bordered*/
-.content.is-marginless.has-text-left,
-.content.has-text-justified-desktop.has-text-justified-fullhd.has-text-justified.has-text-justified-tablet.has-text-left-mobile {
-    color: var(--text) !important;
-    background-color: var(--panel) !important;
-    border: 3px solid var(--border-light) !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px var(--border-dark),
-        0 0 0 2px #111821 !important;
-    padding: 1rem;
-}
-
-/* Blog card: assumes one div has both classes: class="blog card" */
-.blog.card,
-.blog.card .card-content,
-.blog.card .content,
-.blog.card .card-header,
-.blog.card .card-footer {
-    color: var(--text) !important;
-    background-color: var(--panel) !important;
-}
-
-.blog.card {
-    border: 3px solid var(--border-light) !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px var(--border-dark),
-        0 0 0 2px #111821 !important;
-}
-
-.blog.card *,
-.blog.card .title,
-.blog.card .subtitle {
-    color: var(--text) !important;
-}
-
-.blog.card a,
-.blog.card time {
-    color: var(--accent) !important;
-}
-
-/* retro-style blog quotes / message boxes */
 blockquote {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-    border: 3px solid #d7e1ec !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px #40546c,
-        0 0 0 2px #111821 !important;
+    color: var(--text) !important;
+    background-color: var(--panel) !important;
+    border: 0 !important;
+    box-shadow: none !important;
     padding: 1rem 1.25rem !important;
 }
 
-/* Dark-gray Bulma sections */
-.has-background-grey-darker,
-.container.has-text-centered.has-background-grey-darker {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-    border: 3px solid #d7e1ec !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px #40546c,
-        0 0 0 2px #111821 !important;
-}
-
-/* Footer */
 .has-background-black.has-text-centered.has-text-white {
-    color: #f2f5f8 !important;
-    background-color: #2a3747 !important;
-    border-top: 3px solid #d7e1ec !important;
-    box-shadow: inset 0 2px 0 #40546c !important;
-}
-
-/* Fixed black navbar */
-.navbar.is-black.is-fixed-top {
-    color: #f2f5f8 !important;
-    background-color: #2a3747 !important;
-    border-bottom: 3px solid #d7e1ec !important;
-    box-shadow: inset 0 -2px 0 #40546c !important;
-}
-
-/* Navbar links as small beveled buttons */
-.navbar.is-black.is-fixed-top .navbar-item,
-.navbar.is-black.is-fixed-top .navbar-link {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-    border: 1px solid #d7e1ec !important;
-    border-radius: 3px !important;
-    margin: 0.25rem;
-    box-shadow: inset 0 0 0 1px #40546c !important;
-}
-
-.navbar.is-black.is-fixed-top .navbar-item:hover,
-.navbar.is-black.is-fixed-top .navbar-link:hover {
-    color: #ffffff !important;
-    background-color: #40546c !important;
-}
-
-/* Keep icons and text inside those areas readable */
-.has-background-grey-darker *,
-.has-background-black.has-text-centered.has-text-white *,
-.navbar.is-black.is-fixed-top * {
-    color: inherit;
-}
-
-
-
-
-
-/* Navbar menu: blue-gray background, no extra frame */
-.navbar-menu.has-background-black {
-    color: #f2f5f8 !important;
-    background-color: #2a3747 !important;
-    border: 0 !important;
-    box-shadow: none !important;
-}
-
-/* Dropdown parent: no frame of its own */
-.navbar-item.has-dropdown.is-hoverable {
-    color: #f2f5f8 !important;
-    background-color: transparent !important;
-}
-
-/* Single beveled frame around the dropdown */
-.navbar-dropdown.has-background-black.is-left {
-    color: #f2f5f8 !important;
-    background-color: #2a3747 !important;
-    border: 3px solid #d7e1ec !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px #40546c,
-        0 0 0 2px #111821 !important;
-}
-
-/* Dropdown entries: no individual borders */
-.navbar-dropdown.has-background-black.is-left .navbar-item {
-    color: #f2f5f8 !important;
-    background-color: transparent !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-}
-
-.navbar-dropdown.has-background-black.is-left .navbar-item:hover {
-    color: #ffffff !important;
-    background-color: #40546c !important;
-}
-
-/* Navbar link / dropdown trigger */
-.navbar-link {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-    border: 2px solid #d7e1ec !important;
-    border-radius: 3px !important;
-    box-shadow: inset 0 0 0 1px #40546c !important;
-}
-
-.navbar-link:hover {
-    color: #ffffff !important;
-    background-color: #40546c !important;
-}
-
-/* Credits, contact button, and blog card */
-.credits,
-.contact-button,
-.blog-card {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-    border: 3px solid #d7e1ec !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px #40546c,
-        0 0 0 2px #111821 !important;
-}
-
-/* Blog card's inner areas can have their own Bulma backgrounds */
-.blog-card .card-content,
-.blog-card .content {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-}
-
-/* Keep text readable inside these sections */
-.credits *,
-.contact-button *,
-.blog-card *,
-.navbar-menu.has-background-black * {
-    color: #f2f5f8 !important;
-}
-
-/* Accent links inside the blog card */
-.blog-card a {
-    color: #b9d5ef !important;
-}
-
-/* Contact button hover */
-.contact-button:hover {
-    color: #ffffff !important;
-    background-color: #40546c !important;
-}
-
-
-
-
-
-
-
-
-/* Footer: remove the extra line above Credits */
-.has-background-black.has-text-centered.has-text-white {
+    color: var(--text) !important;
+    background-color: var(--page) !important;
     border-top: 0 !important;
     box-shadow: none !important;
 }
 
-/* Credits: keep one complete retro frame */
-.credits {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-    border: 3px solid #d7e1ec !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px #40546c,
-        0 0 0 2px #111821 !important;
-}
-
-/* Retro buttons */
-.button.is-white.is-rounded.is-outlined.is-uppercase.has-text-weight-normal {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-    border: 3px solid #d7e1ec !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px #40546c,
-        0 0 0 2px #111821 !important;
-}
-
-.button.is-white.is-rounded.is-outlined.is-uppercase.has-text-weight-normal:hover {
-    color: #ffffff !important;
-    background-color: #40546c !important;
-}
-
-/* Header text */
 .is-size-5.is-uppercase.has-text-weight-semibold.has-text-black.is-marginless {
-    color: #f2f5f8 !important;
+    color: var(--text) !important;
 }
 
-/* White horizontal dividers */
-hr {
-    height: 1px !important;
-    background-color: #d7e1ec !important;
-    border: 0 !important;
-    opacity: 0.8;
+.has-background-white, .has-background-white-ter {
+    background-color: var(--page) !important;
 }
 
-
-
-
-
-
-
-
-
-
-
-/* Match this specific button class combination */
-.button.is-rounded.is-uppercase.has-text-weight-normal.is-black.is-outlined.has-text-weight-semibold.column.is-two-fifths {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-    border: 3px solid #d7e1ec !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px #40546c,
-        0 0 0 2px #111821 !important;
-}
-
-.button.is-rounded.is-uppercase.has-text-weight-normal.is-black.is-outlined.has-text-weight-semibold.column.is-two-fifths:hover {
-    color: #ffffff !important;
-    background-color: #40546c !important;
-}
-
-/* Keep the dropdown parent's border, remove the link's inner border */
-.navbar-item.has-dropdown.is-hoverable .navbar-link {
-    color: #f2f5f8 !important;
-    background-color: transparent !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-}
-
-/* Remove the retro frame from blockquotes */
-blockquote {
-    border: 0 !important;
-    box-shadow: none !important;
-}
-
-/* Override Bulma's black background utility on horizontal rules */
-hr.has-background-black {
-    height: 1px !important;
-    background-color: #d7e1ec !important;
-    border: 0 !important;
-    opacity: 0.8;
-}
-
-
-
-
-
-
-
-/* Blog cards wrapper: match the has-background-grey-darker frame */
-.columns.has-text-centered {
-    color: #f2f5f8 !important;
-    background-color: #34465a !important;
-    border: 3px solid #d7e1ec !important;
-    border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px #40546c,
-        0 0 0 2px #111821 !important;
-    padding: 1rem;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Keep the search input behind the submit button */
+/* Search Bar Logic */
 .field.has-addons.has-text-weight-medium.has-text-grey > .control {
     position: relative;
     z-index: 0;
@@ -612,40 +215,32 @@ hr.has-background-black {
     z-index: 1;
 }
 
-/* Keep the input's border steady on hover */
-.field.has-addons.has-text-weight-medium.has-text-grey
-> .control:first-child .input:hover {
-    border-color: #40546c !important;
+.field.has-addons.has-text-weight-medium.has-text-grey > .control:first-child .input:hover {
+    border-color: var(--border-dark) !important;
     box-shadow: none !important;
 }
 
-/* Square, arrow-only search button */
-.field.has-addons.has-text-weight-medium.has-text-grey
-> .control:last-child .button,
-.field.has-addons.has-text-weight-medium.has-text-grey
-> .control:last-child .button:hover {
+.field.has-addons.has-text-weight-medium.has-text-grey > .control:last-child .button,
+.field.has-addons.has-text-weight-medium.has-text-grey > .control:last-child .button:hover {
     position: relative;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     box-sizing: border-box;
-    flex: 0 0 3rem;
-    width: 3rem !important;
-    min-width: 3rem !important;
-    height: 3rem !important;
+    flex: 0 0 2.25em;
+    width: 2.25em !important;
+    min-width: 2.25em !important;
+    height: 2.25em !important;
     padding: 0 !important;
     overflow: hidden;
     color: transparent !important;
-    background-color: #34465a !important;
-    border: 3px solid #d7e1ec !important;
+    background-color: var(--panel) !important;
+    border: 3px solid var(--border-light) !important;
     border-radius: 4px !important;
-    box-shadow:
-        inset 0 0 0 2px #40546c,
-        0 0 0 2px #111821 !important;
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821 !important;
 }
 
-.field.has-addons.has-text-weight-medium.has-text-grey
-> .control:last-child .button::after {
+.field.has-addons.has-text-weight-medium.has-text-grey > .control:last-child .button::after {
     content: "→";
     position: absolute;
     inset: 0;
@@ -657,7 +252,12 @@ hr.has-background-black {
     line-height: 1;
 }
 
-.field.has-addons.has-text-weight-medium.has-text-grey
-> .control:last-child .button:hover {
-    background-color: #40546c !important;
+.field.has-addons.has-text-weight-medium.has-text-grey > .control:last-child .button:hover {
+    background-color: var(--border-dark) !important;
 }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 0.5rem; }
+::-webkit-scrollbar-track { background: var(--page); }
+::-webkit-scrollbar-thumb { background: var(--border-dark); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
