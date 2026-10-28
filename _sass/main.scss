@@ -173,3 +173,77 @@ hr {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent);
 }
+
+:root {
+    --page: #202936;
+    --surface: #252f3d;
+    --box: #465a72;
+    --text: #f0f4f8;
+    --muted: #e0e8f0;
+    --accent: #a9c7e3;
+    --edge-light: #d2dce7;
+    --edge-dark: #3d5067;
+}
+
+/* Keep the page and common Bulma sections dark */
+html,
+body,
+.section,
+.hero,
+.hero-body {
+    background-color: var(--page) !important;
+    color: var(--text) !important;
+}
+
+/* Bulma sets its own dark text on these elements */
+.content,
+.content p,
+.content li,
+.content strong,
+.content h1,
+.content h2,
+.content h3,
+.title,
+.subtitle,
+p,
+li {
+    color: var(--text) !important;
+}
+
+.has-background-white,
+.has-background-white-ter {
+    background-color: var(--page) !important;
+}
+
+/* retro-style beveled boxes */
+article,
+.post,
+.post-item,
+.box,
+.card,
+.message {
+    color: var(--text) !important;
+    background-color: var(--box) !important;
+    border: 3px solid var(--edge-light) !important;
+    border-radius: 4px !important;
+    box-shadow:
+        inset 0 0 0 2px var(--edge-dark),
+        0 0 0 2px #111821 !important;
+}
+
+.card-content,
+.message-body {
+    color: var(--text) !important;
+    background-color: var(--box) !important;
+}
+
+.message-header {
+    color: var(--text) !important;
+    background-color: var(--surface) !important;
+}
+
+time,
+.date,
+.tag {
+    color: var(--accent) !important;
+}
