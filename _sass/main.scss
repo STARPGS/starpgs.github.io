@@ -23,7 +23,7 @@
 html,
 body {
     min-height: 100%;
-    background: linear-gradient(135deg, var(--page), var(--page-dark)) !important;
+    background: #111821 !important;
     background-attachment: fixed !important;
     color: var(--text) !important;
     font-family: 'Inter', sans-serif;
@@ -124,10 +124,10 @@ blockquote {
 .navbar.is-black.is-fixed-top .navbar-link,
 .navbar-link {
     color: var(--text) !important;
-    background-color: var(--panel) !important;
-    border: 2px solid var(--border-light) !important;
-    border-radius: 3px !important;
-    box-shadow: inset 0 0 0 1px var(--border-dark) !important;
+    background: linear-gradient(135deg, var(--panel), var(--panel-dark)) !important;
+    border: 3px solid var(--border-light) !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821 !important;
     margin: 0.25rem;
 }
 
@@ -221,9 +221,7 @@ hr, hr.has-background-black {
     color: var(--text) !important;
 }
 
-.has-background-white, .has-background-white-ter {
-    background-color: var(--page) !important;
-}
+
 
 /* Search Bar Logic */
 .field.has-addons.has-text-weight-medium.has-text-grey > .control {
@@ -290,10 +288,21 @@ hr, hr.has-background-black {
 
 
 
+
+
+
 .button.is-white.is-rounded.is-outlined.is-uppercase.has-text-weight-normal:hover,
-.button.is-rounded.is-uppercase.has-text-weight-normal.is-black.is-outlined.has-text-weight-semibold.column.is-two-fifths:hover {
-    color: #ffffff !important;
-    background-color: #40546c !important;
+.button.is-rounded.is-uppercase.has-text-weight-normal.is-black.is-outlined.has-text-weight-semibold.column.is-two-fifths:hover,
+.contact-button:hover {
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821, 0 0 15px var(--accent) !important;
+    transition: box-shadow 0.2s ease-in-out;
 }
 
+
+
+.button:active, .contact-button:active {
+    transform: translateY(2px);
+    box-shadow: inset 0 2px 5px var(--border-dark) !important;
+    transition: transform 0.1s;
+}
 
