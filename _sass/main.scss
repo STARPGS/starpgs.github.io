@@ -585,13 +585,57 @@ hr.has-background-black {
     padding: 1rem;
 }
 
-/* Theme-style buttons */
-.button {
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Keep the search input behind the submit button */
+.field.has-addons.has-text-weight-medium.has-text-grey > .control {
+    position: relative;
+    z-index: 0;
+}
+
+.field.has-addons.has-text-weight-medium.has-text-grey > .control:first-child:hover {
+    z-index: 0 !important;
+}
+
+.field.has-addons.has-text-weight-medium.has-text-grey > .control:last-child {
+    z-index: 1;
+}
+
+/* Keep the input's border steady on hover */
+.field.has-addons.has-text-weight-medium.has-text-grey
+> .control:first-child .input:hover {
+    border-color: #40546c !important;
+    box-shadow: none !important;
+}
+
+/* Square, arrow-only search button */
+.field.has-addons.has-text-weight-medium.has-text-grey
+> .control:last-child .button,
+.field.has-addons.has-text-weight-medium.has-text-grey
+> .control:last-child .button:hover {
+    position: relative;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 0.5rem;
-    color: #f2f5f8 !important;
+    box-sizing: border-box;
+    flex: 0 0 3rem;
+    width: 3rem !important;
+    min-width: 3rem !important;
+    height: 3rem !important;
+    padding: 0 !important;
+    overflow: hidden;
+    color: transparent !important;
     background-color: #34465a !important;
     border: 3px solid #d7e1ec !important;
     border-radius: 4px !important;
@@ -600,18 +644,20 @@ hr.has-background-black {
         0 0 0 2px #111821 !important;
 }
 
-.button::after {
+.field.has-addons.has-text-weight-medium.has-text-grey
+> .control:last-child .button::after {
     content: "→";
-    display: inline-flex;
+    position: absolute;
+    inset: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    font-size: 1.4em;
+    font-size: 1.5rem;
     line-height: 1;
 }
 
-.button:hover,
-.button:focus {
-    color: #ffffff !important;
+.field.has-addons.has-text-weight-medium.has-text-grey
+> .control:last-child .button:hover {
     background-color: #40546c !important;
 }
