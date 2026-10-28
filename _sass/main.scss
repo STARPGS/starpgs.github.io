@@ -7,6 +7,8 @@
     color-scheme: dark;
     --page: #2a3747;
     --panel: #34465a;
+    --page-dark: #1e2734;
+    --panel-dark: #28374b;
     --text: #f2f5f8;
     --accent: #b9d5ef;
     --border-light: #d7e1ec;
@@ -20,7 +22,8 @@
 html,
 body {
     min-height: 100%;
-    background-color: var(--page) !important;
+    background: linear-gradient(135deg, var(--page), var(--page-dark)) !important;
+    background-attachment: fixed !important;
     color: var(--text) !important;
     font-family: 'Inter', sans-serif;
     scroll-behavior: smooth;
@@ -53,7 +56,7 @@ article, .post, .post-item, .box, .card, .message,
 .button.is-white.is-rounded.is-outlined.is-uppercase.has-text-weight-normal,
 .button.is-rounded.is-uppercase.has-text-weight-normal.is-black.is-outlined.has-text-weight-semibold.column.is-two-fifths {
     color: var(--text) !important;
-    background-color: var(--panel) !important;
+    background: linear-gradient(135deg, var(--panel), var(--panel-dark)) !important;
     border: 3px solid var(--border-light) !important;
     border-radius: 4px !important;
     box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821 !important;
