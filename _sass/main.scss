@@ -154,7 +154,7 @@ blockquote {
 
 .navbar-dropdown.has-background-black.is-left {
     color: var(--text) !important;
-    background-color: var(--page) !important;
+    background: linear-gradient(135deg, var(--panel), var(--panel-dark)) !important; 
     border: 3px solid var(--border-light) !important;
     border-radius: 4px !important;
     box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821 !important;
@@ -221,7 +221,9 @@ hr, hr.has-background-black {
     color: var(--text) !important;
 }
 
-
+.has-background-white, .has-background-white-ter {
+    background-color: var(--page) !important;
+}
 
 /* Search Bar Logic */
 .field.has-addons.has-text-weight-medium.has-text-grey > .control {
