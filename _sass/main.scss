@@ -305,3 +305,68 @@ body {
     color: var(--accent) !important;
 }
 
+/* retro-style blog quotes / message boxes */
+blockquote {
+    color: #f2f5f8 !important;
+    background-color: #34465a !important;
+    border: 3px solid #d7e1ec !important;
+    border-radius: 4px !important;
+    box-shadow:
+        inset 0 0 0 2px #40546c,
+        0 0 0 2px #111821 !important;
+    padding: 1rem 1.25rem !important;
+}
+
+/* Dark-gray Bulma sections */
+.has-background-grey-darker,
+.container.has-text-centered.has-background-grey-darker {
+    color: #f2f5f8 !important;
+    background-color: #34465a !important;
+    border: 3px solid #d7e1ec !important;
+    border-radius: 4px !important;
+    box-shadow:
+        inset 0 0 0 2px #40546c,
+        0 0 0 2px #111821 !important;
+}
+
+/* Footer */
+.has-background-black.has-text-centered.has-text-white {
+    color: #f2f5f8 !important;
+    background-color: #2a3747 !important;
+    border-top: 3px solid #d7e1ec !important;
+    box-shadow: inset 0 2px 0 #40546c !important;
+}
+
+/* Fixed black navbar */
+.navbar.is-black.is-fixed-top {
+    color: #f2f5f8 !important;
+    background-color: #2a3747 !important;
+    border-bottom: 3px solid #d7e1ec !important;
+    box-shadow: inset 0 -2px 0 #40546c !important;
+}
+
+/* Navbar links as small beveled buttons */
+.navbar.is-black.is-fixed-top .navbar-item,
+.navbar.is-black.is-fixed-top .navbar-link {
+    color: #f2f5f8 !important;
+    background-color: #34465a !important;
+    border: 1px solid #d7e1ec !important;
+    border-radius: 3px !important;
+    margin: 0.25rem;
+    box-shadow: inset 0 0 0 1px #40546c !important;
+}
+
+.navbar.is-black.is-fixed-top .navbar-item:hover,
+.navbar.is-black.is-fixed-top .navbar-link:hover {
+    color: #ffffff !important;
+    background-color: #40546c !important;
+}
+
+/* Keep icons and text inside those areas readable */
+.has-background-grey-darker *,
+.has-background-black.has-text-centered.has-text-white *,
+.navbar.is-black.is-fixed-top * {
+    color: inherit;
+}
+
+
