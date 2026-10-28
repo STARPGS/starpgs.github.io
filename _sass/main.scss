@@ -5,18 +5,19 @@
 
 :root {
     color-scheme: dark;
-    --page: #2a3747;
-    --panel: #34465a;
-    --page-dark: #1e2734;
-    --panel-dark: #28374b;
+    --page: #4a76c4;        /* Medium Cobalt (Top Left) */
+    --page-dark: #1a2b4d;   /* Deep Navy (Bottom Right) */
+    --panel: #5a86d1;       /* Slightly brighter cobalt for panels */
+    --panel-dark: #243b63;  /* Navy for panel depth */
     --text: #f2f5f8;
     --accent: #b9d5ef;
-    --border-light: #d7e1ec;
-    --border-dark: #40546c;
+    --border-light: #e0ecf8;
+    --border-dark: #334763; /* Adjusted to fit the blue theme */
     --surface: #252f3d;
     --box: #465a72;
     --muted: #e0e8f0;
 }
+
 
 /* Global Styles */
 html,
@@ -84,7 +85,7 @@ article, .post, .post-item, .box, .card, .message,
 
 blockquote {
     color: var(--text) !important;
-    background-color: var(--panel) !important;
+    background: transparent !important;
     border: 0 !important;
     box-shadow: none !important;
     padding: 1rem 1.25rem !important;
