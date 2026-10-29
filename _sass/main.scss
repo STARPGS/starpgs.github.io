@@ -299,6 +299,10 @@ hr, hr.has-background-black, hr.has-background-grey {
 
 
 
+.navbar-link, .button, .contact-button {
+    display: inline-block !important;
+}
+
 .navbar-item:not(.has-dropdown) .navbar-link:hover,
 .button.is-white.is-rounded.is-outlined.is-uppercase.has-text-weight-normal:hover,
 .button.is-rounded.is-uppercase.has-text-weight-normal.is-black.is-outlined.has-text-weight-semibold.column.is-two-fifths:hover,
@@ -307,16 +311,17 @@ hr, hr.has-background-black, hr.has-background-grey {
     transition: box-shadow 0.2s ease-in-out;
 }
 
-
-
 .navbar-item:not(.has-dropdown) .navbar-link:active,
 .button:active, 
 .contact-button:active {
-    transform: translateY(2px);
-    box-shadow: inset 0 2px 5px var(--border-dark) !important;
+    transform: translateY(2px) !important;
+    box-shadow: inset 0 2px 5px var(--border-dark), 0 0 0 2px #111821 !important;
     transition: transform 0.1s;
 }
 
 
+#credits { 
+  margin-top: 6px !important; 
+}
 
 
