@@ -204,7 +204,7 @@ time, .date, .tag {
     font-family: 'IBM Plex Mono', monospace;
 }
 
-hr, hr.has-background-black {
+hr, hr.has-background-black, hr.has-background-grey {
     height: 1px !important;
     background-color: var(--border-light) !important;
     border: 0 !important;
@@ -214,9 +214,11 @@ hr, hr.has-background-black {
 
 .has-background-black.has-text-centered.has-text-white {
     color: var(--text) !important;
-    background-color: var(--page) !important;
-    border-top: 0 !important;
-    box-shadow: none !important;
+    background: linear-gradient(135deg, var(--panel), var(--panel-dark)) !important;
+    border: 3px solid var(--border-light) !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821 !important;
+    padding: 1rem !important;
 }
 
 .is-size-5.is-uppercase.has-text-weight-semibold.has-text-black.is-marginless {
@@ -290,11 +292,14 @@ hr, hr.has-background-black {
 
 
 
+.has-text-grey {
+    color: var(--text) !important;
+}
 
 
 
 
-
+.navbar-item:not(.has-dropdown) .navbar-link:hover,
 .button.is-white.is-rounded.is-outlined.is-uppercase.has-text-weight-normal:hover,
 .button.is-rounded.is-uppercase.has-text-weight-normal.is-black.is-outlined.has-text-weight-semibold.column.is-two-fifths:hover,
 .contact-button:hover {
@@ -304,9 +309,14 @@ hr, hr.has-background-black {
 
 
 
-.button:active, .contact-button:active {
+.navbar-item:not(.has-dropdown) .navbar-link:active,
+.button:active, 
+.contact-button:active {
     transform: translateY(2px);
     box-shadow: inset 0 2px 5px var(--border-dark) !important;
     transition: transform 0.1s;
 }
+
+
+
 
