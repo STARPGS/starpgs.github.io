@@ -16,9 +16,30 @@ layout: compress
                         {{page.title}}
                     </h1>
                     <hr class="has-background-black">
+
+                    {% if page.typewriter_effect %}
+
+                    <!-- This wraps your markdown content in the cobalt retro box automatically -->
+                    <div class="container">
+                        <div class="box jrpg-typewriter-container">
+                            {{ content }}
+                        </div>
+                    </div>
+
+                    <!-- This adds the Skip button only to pages that need it -->
+                    <div id="jrpg-typewriter-controls">
+                        <button id="jrpg-typewriter-skip-button">SHOW ALL</button>
+                    </div>
+
+                    <!-- Load the script only if the effect is enabled -->
+                    <script src="{{ '/assets/js/typewriter.js' | relative_url }}"></script>
+
+                    {% else %}
+                    <!-- Standard layout for normal posts -->
                     <div class="content is-marginless {% if page.text_align == 'left' %}has-text-left{% endif %}">
                         {{ content }}
                     </div>
+                {% endif %}
                 </div>
             </div>
         </div>
