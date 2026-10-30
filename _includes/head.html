@@ -7,8 +7,8 @@
 
 {% if page.typewriter_effect %}
     <style>
-        /* Critical CSS: This MUST be inlined to prevent the flash */
-        .jrpg-typewriter-js-enabled .jrpg-typewriter-container > * { 
+        /* This hides the content IMMEDIATELY without waiting for JS to prevent flash. */
+        .jrpg-typewriter-container > * { 
             opacity: 0 !important; 
         }
     </style>
