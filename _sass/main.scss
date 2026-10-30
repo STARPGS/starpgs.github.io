@@ -464,6 +464,7 @@ hr, hr.has-background-black, hr.has-background-grey {
 .footer-item {
     display: flex;
     flex-direction: column;
+    color: var(--text);
     gap: 4px;
 }
 
