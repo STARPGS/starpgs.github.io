@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             chars[i].classList.add('jrpg-typewriter-visible');
             
             // If the "character" is actually a video or image, pause slightly longer
-            const delay = chars[i].tagName === 'IFRAME' ? 100 : 15;
+            const delay = chars[i].tagName === 'IFRAME' ? 50 : 10;
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     }
@@ -80,6 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function jrpgRunTypeSequence() {
         jrpgSequenceStarted = true;
+
+        // Immediately remove the "FOUC" hide state for all blocks before starting animation
+        jrpgTextElements.forEach(el => {
+            el.style.setProperty('opacity', '1', 'important');
+        });
+
         for (let i = 0; i < jrpgTextElements.length; i++) {
             if (jrpgIsSkipped) break;
             
@@ -95,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function jrpgRevealAllText() {
         jrpgTextElements.forEach(el => {
+            el.style.setProperty('opacity', '1', 'important');
             el.classList.add('jrpg-typewriter-active');
             el.querySelectorAll('.jrpg-typewriter-char').forEach(c => c.classList.add('jrpg-typewriter-visible'));
         });
