@@ -30,15 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             node.parentNode.replaceChild(fragment, node);
         } else if (node.nodeType === Node.ELEMENT_NODE) {
-            // Treat these as "single characters" that pop in all at once
-            // Adding 'BR' here ensures line breaks are handled by the typewriter sequence
             const complexBlocks = ['IFRAME', 'IMG', 'VIDEO', 'H1', 'H2', 'H3', 'PRE', 'CODE', 'BR'];
             
             if (!complexBlocks.includes(node.tagName)) {
-                // If it's a simple tag (like <a>, <strong>), recurse inside it
                 Array.from(node.childNodes).forEach(child => wrapTextNodes(child));
             } else {
-                // Mark the block (including <br />) as a typewriter char
                 node.classList.add('jrpg-typewriter-char');
             }
         }
@@ -69,10 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // DELAY LOGIC:
             let delay = 10; // Standard letter speed
+            const charText = chars[i].textContent;
+
             if (chars[i].tagName === 'BR') {
-                delay = 500; // Obvious pause for line breaks <br />
+                delay = 500; // Long pause for line breaks
             } else if (chars[i].tagName === 'IFRAME') {
                 delay = 50;  // Slight pause for videos
+            } else if (charText === '.' || charText === ',') {
+                delay = 200; // Minor pause for punctuation
             }
 
             await new Promise(resolve => setTimeout(resolve, delay));
