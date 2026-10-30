@@ -299,10 +299,6 @@ hr, hr.has-background-black, hr.has-background-grey {
 
 
 
-.navbar-link, .button, .contact-button {
-    display: inline-block !important;
-}
-
 .navbar-item:not(.has-dropdown) .navbar-link:hover,
 .button.is-white.is-rounded.is-outlined.is-uppercase.has-text-weight-normal:hover,
 .button.is-rounded.is-uppercase.has-text-weight-normal.is-black.is-outlined.has-text-weight-semibold.column.is-two-fifths:hover,
@@ -311,17 +307,250 @@ hr, hr.has-background-black, hr.has-background-grey {
     transition: box-shadow 0.2s ease-in-out;
 }
 
+
+
 .navbar-item:not(.has-dropdown) .navbar-link:active,
 .button:active, 
 .contact-button:active {
-    transform: translateY(2px) !important;
-    box-shadow: inset 0 2px 5px var(--border-dark), 0 0 0 2px #111821 !important;
+    transform: translateY(2px);
+    box-shadow: inset 0 2px 5px var(--border-dark) !important;
     transition: transform 0.1s;
 }
 
 
 #credits { 
-  margin-top: 6px !important; 
+  margin-top: 4px !important; 
 }
+
+
+
+
+
+
+/* JRPG Status Window Layout */
+.status-window {
+    width: 650px;
+    margin: 2rem auto; /* Centers the window on your page */
+    background: linear-gradient(135deg, var(--panel), var(--panel-dark));
+    border: 3px solid var(--border-light);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 20px;
+}
+
+
+.window-header {
+    grid-column: span 2;
+    border-bottom: 3px solid var(--border-light);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.game-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.game-class {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--accent);
+}
+
+.window-footer {
+    grid-column: span 2;
+    border-top: 3px solid var(--border-light);
+    margin-top: 20px;
+    padding-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+}
+
+
+.face-container {
+    width: 140px;
+    height: 140px;
+    background: var(--surface);
+    border: 3px solid var(--border-light);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: var(--accent);
+}
+
+.stats-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.stat-label {
+    color: var(--accent);
+    font-weight: 500;
+}
+
+
+.retro-progress-container {
+    width: 100%;
+    height: 18px;
+    background-color: var(--surface);
+    border: 3px solid var(--border-light);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821;
+    overflow: hidden;
+    position: relative;
+}
+
+.retro-progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, var(--panel), var(--panel-dark));
+    box-shadow: 0 0 10px var(--accent);
+    transition: width 0.4s ease-in-out;
+}
+
+/* Attribute Grid for the bars (Story, OST, etc.) */
+.attr-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-dark);
+}
+
+.attr-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.attr-info {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+}
+
+.attr-name {
+    color: var(--accent);
+    text-transform: uppercase;
+}
+
+.small-bar { height: 12px !important; }
+
+
+.talents-box {
+    grid-column: span 2;
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin-top: 15px;
+}
+
+.talents-header {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: block;
+}
+
+.talents-divider {
+    height: 2px;
+    background-color: var(--border-light);
+    border: none;
+    margin: 0 0 10px 0;
+    opacity: 0.6;
+}
+
+.talent-name {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+
+
+
+/* --- Typewriter Effect Integration --- */
+
+/* Hide text initially only if JS is active to prevent "flash" */
+.jrpg-typewriter-js-enabled .jrpg-typewriter-container > * {
+    opacity: 0;
+}
+
+.jrpg-typewriter-container > * {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    transition: opacity 0.3s ease;
+    min-height: 1.2em;
+    opacity: 1; 
+}
+
+.jrpg-typewriter-container > *.jrpg-typewriter-active {
+    opacity: 1;
+}
+
+.jrpg-typewriter-char {
+    opacity: 0;
+}
+
+.jrpg-typewriter-char.jrpg-typewriter-visible {
+    opacity: 1;
+}
+
+/* Typewriter Controls - Styled to match Master Theme */
+#jrpg-typewriter-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+#jrpg-typewriter-skip-button {
+    background: linear-gradient(135deg, var(--panel), var(--panel-dark)) !important;
+    color: var(--text) !important;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 20px;
+    border: 3px solid var(--border-light) !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821 !important;
+    display: none; /* Shown by JS */
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+#jrpg-typewriter-skip-button:hover {
+    box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px #111821, 0 0 15px var(--accent) !important;
+}
+
+#jrpg-typewriter-skip-button:active {
+    transform: translateY(2px);
+    box-shadow: inset 0 2px 5px var(--border-dark) !important;
+}
+
 
 
