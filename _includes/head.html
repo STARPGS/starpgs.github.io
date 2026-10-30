@@ -4,4 +4,12 @@
     <link rel="stylesheet" href="{% if site.baseurl %}{{site.baseurl}}{% else %}{% endif %}/assets/css/style.css">
     <script src="https://kit.fontawesome.com/6a97161b76.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% if site.favicon-url %}{{site.favicon-url}}{% else %}{{ 'assets/images/logo.png' | absolute_url }}{% endif %}" type="image/x-icon">
+
+{% if page.typewriter_effect %}
+    <script>
+        // This runs immediately to hide text and prevent the "flash" of content
+        document.documentElement.classList.add('jrpg-typewriter-js-enabled');
+    </script>
+{% endif %}
+
 </head>
