@@ -950,5 +950,18 @@ html {
 }
 
 
+/* Temporary Override for ds-background Testing */
+.hero, 
+.about, 
+.section, 
+.bg-light, 
+.bg-dark, 
+#about, 
+#contact, 
+#portfolio, 
+body {
+    background: transparent !important;
+    background-color: transparent !important;
+}
 
 
