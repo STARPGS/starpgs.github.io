@@ -835,9 +835,20 @@ body {
 
 
 
+/* 1. OVERRIDE for arrow cursor effect: Spacing & Position - (a.navbar-item targets only links, not wrapper divs) */
+a.navbar-item, .navbar-link, .button, .contact-button, #backtotop {
+    position: relative !important;
+    padding-left: 3rem !important; 
+    padding-right: 3rem !important; 
+}
 
-/* OVERRIDE: The Arrow */
-.navbar-link:hover::before, .button:hover::before, .contact-button:hover::before, .navbar-item:hover::before, #backtotop:hover::before {
+/* 2. OVERRIDE: Grow Effect */
+a.navbar-item:hover, .navbar-link:hover, .button:hover, .contact-button:hover, #backtotop:hover {
+    transform: scale(1.03) !important;
+}
+
+/* 3. OVERRIDE: The Arrow */
+a.navbar-item:hover::before, .navbar-link:hover::before, .button:hover::before, .contact-button:hover::before, #backtotop:hover::before {
     content: "▶" !important; 
     position: absolute !important;
     left: 15px !important; 
@@ -846,21 +857,23 @@ body {
     animation: cursor-blink 1.2s infinite, cursor-drift 0.8s ease-in-out infinite !important;
 }
 
-/* OVERRIDE: Spacing & Position */
-.navbar-link, .button, .contact-button, .navbar-item, #backtotop {
-    position: relative !important;
-    padding-left: 2.5rem !important; 
-    padding-right: 2.5rem !important; 
-}
-
-/* OVERRIDE: Grow Effect (No shadow) */
-.navbar-link:hover, .button:hover, .contact-button:hover, .navbar-item:hover, #backtotop:hover {
-    transform: scale(1.03) !important;
-}
-
-/* OVERRIDE: The Click Press */
-.button:active, .navbar-item:active, #backtotop:active { 
+/* 4. OVERRIDE: The Click Press */
+a.navbar-item:active, .navbar-link:active, .button:active, #backtotop:active { 
     transform: scale(0.95) !important; 
+}
+
+/* 5. THE FIX: Disable all effects for items INSIDE the dropdown */
+.navbar-dropdown a.navbar-item, 
+.navbar-dropdown .navbar-link {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    transform: none !important;
+}
+
+.navbar-dropdown a.navbar-item::before, 
+.navbar-dropdown .navbar-link::before {
+    content: none !important;
+    display: none !important;
 }
 
 
