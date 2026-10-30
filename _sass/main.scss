@@ -844,19 +844,19 @@ body {
 
 
 /* 1. OVERRIDE: Spacing & Position - Target only links and buttons to prevent "Double Arrows" */
-.navbar-link, .button, .contact-button, a.navbar-item, #backtotop {
+.navbar-item has-dropdown is-hoverable, .button, .contact-button, a.navbar-item, #backtotop {
     position: relative !important;
     padding-left: 3rem !important; 
     padding-right: 3rem !important; 
 }
 
 /* 2. OVERRIDE: Grow Effect */
-.navbar-link:hover, .button:hover, .contact-button:hover, a.navbar-item:hover, #backtotop:hover {
+.navbar-item has-dropdown is-hoverable:hover, .button:hover, .contact-button:hover, a.navbar-item:hover, #backtotop:hover {
     transform: scale(1.03) !important;
 }
 
 /* 3. OVERRIDE: The Arrow - Targeted only at the link/button level */
-.navbar-link:hover::before, .button:hover::before, .contact-button:hover::before, a.navbar-item:hover::before, #backtotop:hover::before {
+.navbar-item has-dropdown is-hoverable:hover::before, .button:hover::before, .contact-button:hover::before, a.navbar-item:hover::before, #backtotop:hover::before {
     content: "▶" !important; 
     position: absolute !important;
     left: 15px !important; 
@@ -866,7 +866,7 @@ body {
 }
 
 /* 4. OVERRIDE: The Click Press */
-.navbar-link:active, .button:active, a.navbar-item:active, #backtotop:active { 
+.navbar-item has-dropdown is-hoverable:active, .button:active, a.navbar-item:active, #backtotop:active { 
     transform: scale(0.95) !important; 
 }
 
