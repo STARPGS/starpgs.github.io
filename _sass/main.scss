@@ -843,7 +843,7 @@ body {
 
 
 
-/* 1. OVERRIDE: Spacing & Position - Target only links and buttons to prevent "Double Arrows" */
+/* 1. OVERRIDE: Spacing & Position */
 .navbar-item.has-dropdown.is-hoverable, .button, .contact-button, a.navbar-item, #backtotop {
     position: relative !important;
     padding-left: 3rem !important; 
@@ -855,23 +855,24 @@ body {
     transform: scale(1.03) !important;
 }
 
-/* 3. OVERRIDE: The Arrow - Targeted only at the link/button level */
+/* 3. OVERRIDE: The Arrow - Vertically Centered */
 .navbar-item.has-dropdown.is-hoverable:hover::before, .button:hover::before, .contact-button:hover::before, a.navbar-item:hover::before, #backtotop:hover::before {
     content: "▶" !important; 
     position: absolute !important;
     left: 15px !important; 
+    top: 50% !important;
     color: var(--text) !important;
     font-size: 0.8rem !important;
+    /* Animation now handles the vertical centering via translateY(-50%) */
     animation: cursor-blink 1.2s infinite, cursor-drift 0.8s ease-in-out infinite !important;
 }
 
-/* 4. OVERRIDE: The Click Press */
-.navbar-item.has-dropdown.is-hoverable:active, .button:active, a.navbar-item:active, #backtotop:active { 
+/* 4. OVERRIDE: The Click Press - Removed for dropdown header */
+.button:active, a.navbar-item:active, #backtotop:active { 
     transform: scale(0.95) !important; 
 }
 
-/* 5. THE DROPDOWN KILL-SWITCH: Removes all effects from the inner list */
-/* This ensures no arrows, no padding shifts, no scaling, no click animation, and no bg changes */
+/* 5. THE DROPDOWN KILL-SWITCH & ITEM OVERRIDES */
 .navbar-dropdown .navbar-item, 
 .navbar-dropdown a, 
 .navbar-dropdown .navbar-link {
@@ -881,6 +882,13 @@ body {
     background: transparent !important;
     background-color: transparent !important;
     transition: none !important;
+}
+
+/* Specific override for dropdown items: pointer cursor and no background change */
+.navbar-item.has-text-grey-light:hover {
+    cursor: pointer !important;
+    background: transparent !important;
+    background-color: transparent !important;
 }
 
 /* Kills the arrow for items inside the list */
@@ -898,7 +906,16 @@ body {
     transform: none !important;
 }
 
+/* Remove background gradient from navbar-link */
+.navbar-link {
+    background: none !important;
+    background-image: none !important;
+}
+
 @keyframes cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-@keyframes cursor-drift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+@keyframes cursor-drift { 
+    0%, 100% { transform: translate(0, -50%); } 
+    50% { transform: translate(6px, -50%); } 
+}
 
 
