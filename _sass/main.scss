@@ -46,6 +46,14 @@ a:hover { color: var(--text); }
 .container { max-width: 1100px; }
 .content { max-width: 700px; }
 
+.site-title-container {
+    display: flex;
+    align-items: center;
+    color: var(--text);
+    height: 1.5rem;
+}
+
+
 /* Typography Overrides */
 .content, .content p, .content li, .content strong, 
 .content h1, .content h2, .content h3, .title, .subtitle, p, li {
@@ -835,20 +843,20 @@ body {
 
 
 
-/* 1. OVERRIDE for arrow cursor effect: Spacing & Position - (a.navbar-item targets only links, not wrapper divs) */
-a.navbar-item, .navbar-link, .button, .contact-button, #backtotop {
+/* 1. OVERRIDE for cursor effect: Spacing & Position - Targets .navbar-item so the WHOLE button reacts */
+.navbar-link, .button, .contact-button, .navbar-item, #backtotop {
     position: relative !important;
     padding-left: 3rem !important; 
     padding-right: 3rem !important; 
 }
 
-/* 2. OVERRIDE: Grow Effect */
-a.navbar-item:hover, .navbar-link:hover, .button:hover, .contact-button:hover, #backtotop:hover {
+/* 2. OVERRIDE: Grow Effect (No random shadows) */
+.navbar-link:hover, .button:hover, .contact-button:hover, .navbar-item:hover, #backtotop:hover {
     transform: scale(1.03) !important;
 }
 
 /* 3. OVERRIDE: The Arrow */
-a.navbar-item:hover::before, .navbar-link:hover::before, .button:hover::before, .contact-button:hover::before, #backtotop:hover::before {
+.navbar-link:hover::before, .button:hover::before, .contact-button:hover::before, .navbar-item:hover::before, #backtotop:hover::before {
     content: "▶" !important; 
     position: absolute !important;
     left: 15px !important; 
@@ -858,22 +866,28 @@ a.navbar-item:hover::before, .navbar-link:hover::before, .button:hover::before, 
 }
 
 /* 4. OVERRIDE: The Click Press */
-a.navbar-item:active, .navbar-link:active, .button:active, #backtotop:active { 
+.navbar-link:active, .button:active, .navbar-item:active, #backtotop:active { 
     transform: scale(0.95) !important; 
 }
 
-/* 5. THE FIX: Disable all effects for items INSIDE the dropdown */
-.navbar-dropdown a.navbar-item, 
-.navbar-dropdown .navbar-link {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    transform: none !important;
+/* 5. DROPDOWN CLEANUP: Fixes items INSIDE the dropdown list */
+.navbar-dropdown .navbar-item {
+    padding-left: 1.25rem !important; /* Restores standard padding */
+    padding-right: 1.25rem !important;
+    transform: none !important;      /* Removes grow/shrink effect */
 }
 
-.navbar-dropdown a.navbar-item::before, 
-.navbar-dropdown .navbar-link::before {
+/* Removes the arrow from dropdown list items */
+.navbar-dropdown .navbar-item::before {
     content: none !important;
     display: none !important;
+}
+
+/* Removes scaling AND background color changes on hover for dropdown items */
+.navbar-dropdown .navbar-item:hover {
+    transform: none !important;
+    background-color: transparent !important; /* Kills previous background hover effects */
+    background: transparent !important;       /* Extra safety for gradients */
 }
 
 
