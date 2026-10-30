@@ -7,35 +7,7 @@ layout: compress
 {% include head.html %}
 
 <body>
-
-  <div class="space-system-container">
-    <div class="ds-vignette"></div>
-    <div class="ds-noise-overlay"></div>
-
-    <div class="ds-nebula-wrapper">
-        <div class="ds-nebula-cloud ds-cloud-1"></div>
-        <div class="ds-nebula-cloud ds-cloud-2"></div>
-        <div class="ds-nebula-cloud ds-cloud-3"></div>
-    </div>
-
-    <!-- Far Layer: Scroll Wrapper -> Twinkle Layers -->
-    <div class="ds-star-scroll-wrapper ds-far">
-        <div class="ds-star-layer ds-stars-far-slow"></div>
-        <div class="ds-star-layer ds-stars-far-fast"></div>
-    </div>
-
-    <!-- Mid Layer: Scroll Wrapper -> Twinkle Layers -->
-    <div class="ds-star-scroll-wrapper ds-mid">
-        <div class="ds-star-layer ds-stars-mid-slow"></div>
-        <div class="ds-star-layer ds-stars-mid-fast"></div>
-    </div>
-
-    <!-- Near Layer: Scroll Wrapper -> Twinkle Layers -->
-    <div class="ds-star-scroll-wrapper ds-near">
-        <div class="ds-star-layer ds-stars-near-slow"></div>
-        <div class="ds-star-layer ds-stars-near-fast"></div>
-    </div>
-</div>
+  {% include ds-background.html %}
 
   {% include navbar.html %}
   {% include showcase.html %}
