@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Recursive function to wrap text in spans without destroying HTML tags.
-     * Preserves links, bold, italics, and treats iframes/images as single units.
+     * Preserves links, bold, italics, and treats iframes/images/br as single units.
      */
     function wrapTextNodes(node) {
         if (node.nodeType === Node.TEXT_NODE) {
@@ -23,21 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
             [...text].forEach(char => {
                 const span = document.createElement('span');
                 span.classList.add('jrpg-typewriter-char');
-                span.setAttribute('aria-hidden', 'true'); // Hide individual letters from screen readers
+                span.setAttribute('aria-hidden', 'true'); 
                 span.textContent = char;
                 fragment.appendChild(span);
             });
             
             node.parentNode.replaceChild(fragment, node);
         } else if (node.nodeType === Node.ELEMENT_NODE) {
-            // These elements are treated as a single "character" unit (they pop in all at once)
+            // Treat these as "single characters" that pop in all at once
+            // Adding 'BR' here ensures line breaks are handled by the typewriter sequence
             const complexBlocks = ['IFRAME', 'IMG', 'VIDEO', 'H1', 'H2', 'H3', 'PRE', 'CODE', 'BR'];
             
             if (!complexBlocks.includes(node.tagName)) {
-                // If it's a simple tag (like <a>, <strong>, <em>), recurse inside it
+                // If it's a simple tag (like <a>, <strong>), recurse inside it
                 Array.from(node.childNodes).forEach(child => wrapTextNodes(child));
             } else {
-                // If it's a complex block, just mark the whole block as a typewriter char
+                // Mark the block (including <br />) as a typewriter char
                 node.classList.add('jrpg-typewriter-char');
             }
         }
@@ -45,13 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize all elements
     jrpgTextElements.forEach(el => {
-        // Accessibility: Provide the full text to screen readers immediately
         const fullText = el.textContent.trim();
         if (fullText) {
             el.setAttribute('aria-label', fullText);
         }
-        
-        // Process the DOM tree to add the typewriter spans
         Array.from(el.childNodes).forEach(child => wrapTextNodes(child));
     });
 
@@ -69,8 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             chars[i].classList.add('jrpg-typewriter-visible');
             
-            // If the "character" is actually a video or image, pause slightly longer, and inbetween for line breaks
-            const delay = chars[i].tagName === 'BR' ? 25 : (chars[i].tagName === 'IFRAME' ? 50 : 10);
+            // DELAY LOGIC:
+            let delay = 10; // Standard letter speed
+            if (chars[i].tagName === 'BR') {
+                delay = 500; // Obvious pause for line breaks <br />
+            } else if (chars[i].tagName === 'IFRAME') {
+                delay = 50;  // Slight pause for videos
+            }
+
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     }
@@ -81,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function jrpgRunTypeSequence() {
         jrpgSequenceStarted = true;
 
-        // Immediately remove the "FOUC" hide state for all blocks before starting animation
+        // Remove "FOUC" hide state for all blocks immediately
         jrpgTextElements.forEach(el => {
             el.style.setProperty('opacity', '1', 'important');
         });
@@ -91,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             await jrpgTypeParagraph(jrpgTextElements[i]);
             
-            // Small pause between paragraphs for readability
+            // Pause between <p> blocks
             await new Promise(resolve => setTimeout(resolve, 500));
         }
     }
@@ -107,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Trigger the sequence when the first element enters the viewport
     const jrpgIntersectionObserver = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && !jrpgSequenceStarted) {
             jrpgRunTypeSequence();
@@ -119,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
         jrpgIntersectionObserver.observe(jrpgTextElements[0]);
     }
 
-    // Skip Button Event Listener
     if (jrpgSkipBtn) {
         jrpgSkipBtn.addEventListener('click', () => {
             jrpgIsSkipped = true;
