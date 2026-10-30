@@ -137,11 +137,11 @@ blockquote {
 }
 
 .navbar.is-black.is-fixed-top .navbar-item:hover,
-.navbar.is-black.is-fixed-top .navbar-link:hover,
 .navbar-link:hover {
     color: #ffffff !important;
     background-color: var(--border-dark) !important;
 }
+
 
 .navbar-menu.has-background-black {
     color: var(--text) !important;
@@ -174,10 +174,7 @@ blockquote {
 }
 
 
-.navbar-dropdown.has-background-black.is-left .navbar-item:hover {
-    color: #ffffff !important;
-    background-color: var(--border-dark) !important;
-}
+
 
 /* Form Elements & Buttons */
 .button {
@@ -852,8 +849,8 @@ body {
 /* OVERRIDE: Spacing & Position */
 .navbar-link, .button, .contact-button, .navbar-item, #backtotop {
     position: relative !important;
-    padding-left: 3rem !important; 
-    padding-right: 3rem !important; 
+    padding-left: 2.5rem !important; 
+    padding-right: 2.5rem !important; 
 }
 
 /* OVERRIDE: Grow Effect (No shadow) */
@@ -862,7 +859,7 @@ body {
 }
 
 /* OVERRIDE: The Click Press */
-.navbar-link:active, .button:active, .navbar-item:active, #backtotop:active { 
+.button:active, .navbar-item:active, #backtotop:active { 
     transform: scale(0.95) !important; 
 }
 
