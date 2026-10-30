@@ -461,10 +461,17 @@ hr, hr.has-background-black, hr.has-background-grey {
 
 .small-bar { height: 12px !important; }
 
-.footer-item span {
-  color: var(--accent);
+.footer-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
+.footer-label {
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+}
 
 .talents-box {
     grid-column: span 2;
