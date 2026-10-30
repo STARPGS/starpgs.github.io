@@ -133,7 +133,7 @@ blockquote {
     box-shadow: inset 0 -2px 0 var(--border-dark) !important;
 }
 
-
+.navbar.is-black.is-fixed-top .navbar-item,
 .navbar.is-black.is-fixed-top .navbar-link,
 .navbar-link {
     color: var(--text) !important;
@@ -144,7 +144,8 @@ blockquote {
     margin: 0.25rem;
 }
 
-.navbar.is-black.is-fixed-top .navbar-item:hover {
+.navbar.is-black.is-fixed-top .navbar-item:hover,
+.navbar-link:hover {
     color: #ffffff !important;
     background-color: var(--border-dark) !important;
 }
