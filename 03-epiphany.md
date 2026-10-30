@@ -2,6 +2,7 @@
 title: Epiphany
 layout: page
 permalink: /epiphany
+typewriter_effect: true
 text_align: left
 ---
 
