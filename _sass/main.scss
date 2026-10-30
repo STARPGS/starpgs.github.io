@@ -843,20 +843,20 @@ body {
 
 
 
-/* 1. OVERRIDE for cursor effect: Spacing & Position - Targets .navbar-item so the WHOLE button reacts */
-.navbar-link, .button, .contact-button, .navbar-item, #backtotop {
+/* 1. OVERRIDE: Spacing & Position - Target only links and buttons to prevent "Double Arrows" */
+.navbar-link, .button, .contact-button, a.navbar-item, #backtotop {
     position: relative !important;
     padding-left: 3rem !important; 
     padding-right: 3rem !important; 
 }
 
-/* 2. OVERRIDE: Grow Effect (No random shadows) */
-.navbar-link:hover, .button:hover, .contact-button:hover, .navbar-item:hover, #backtotop:hover {
+/* 2. OVERRIDE: Grow Effect */
+.navbar-link:hover, .button:hover, .contact-button:hover, a.navbar-item:hover, #backtotop:hover {
     transform: scale(1.03) !important;
 }
 
-/* 3. OVERRIDE: The Arrow */
-.navbar-link:hover::before, .button:hover::before, .contact-button:hover::before, .navbar-item:hover::before, #backtotop:hover::before {
+/* 3. OVERRIDE: The Arrow - Targeted only at the link/button level */
+.navbar-link:hover::before, .button:hover::before, .contact-button:hover::before, a.navbar-item:hover::before, #backtotop:hover::before {
     content: "▶" !important; 
     position: absolute !important;
     left: 15px !important; 
@@ -866,28 +866,36 @@ body {
 }
 
 /* 4. OVERRIDE: The Click Press */
-.navbar-link:active, .button:active, .navbar-item:active, #backtotop:active { 
+.navbar-link:active, .button:active, a.navbar-item:active, #backtotop:active { 
     transform: scale(0.95) !important; 
 }
 
-/* 5. DROPDOWN CLEANUP: Fixes items INSIDE the dropdown list */
-.navbar-dropdown .navbar-item {
-    padding-left: 1.25rem !important; /* Restores standard padding */
+/* 5. THE DROPDOWN KILL-SWITCH: Removes all effects from the inner list */
+/* This ensures no arrows, no padding shifts, no scaling, no click animation, and no bg changes */
+.navbar-dropdown .navbar-item, 
+.navbar-dropdown a, 
+.navbar-dropdown .navbar-link {
+    padding-left: 1.25rem !important; 
     padding-right: 1.25rem !important;
-    transform: none !important;      /* Removes grow/shrink effect */
+    transform: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    transition: none !important;
 }
 
-/* Removes the arrow from dropdown list items */
-.navbar-dropdown .navbar-item::before {
+/* Kills the arrow for items inside the list */
+.navbar-dropdown .navbar-item::before, 
+.navbar-dropdown a::before, 
+.navbar-dropdown .navbar-link::before {
     content: none !important;
     display: none !important;
 }
 
-/* Removes scaling AND background color changes on hover for dropdown items */
-.navbar-dropdown .navbar-item:hover {
+/* Kills the click animation for items inside the list */
+.navbar-dropdown .navbar-item:active, 
+.navbar-dropdown a:active, 
+.navbar-dropdown .navbar-link:active {
     transform: none !important;
-    background-color: transparent !important; /* Kills previous background hover effects */
-    background: transparent !important;       /* Extra safety for gradients */
 }
 
 
