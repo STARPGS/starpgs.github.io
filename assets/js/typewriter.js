@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
             node.parentNode.replaceChild(fragment, node);
         } else if (node.nodeType === Node.ELEMENT_NODE) {
             // These elements are treated as a single "character" unit (they pop in all at once)
-            const complexBlocks = ['IFRAME', 'IMG', 'VIDEO', 'H1', 'H2', 'H3', 'PRE', 'CODE'];
+            const complexBlocks = ['IFRAME', 'IMG', 'VIDEO', 'H1', 'H2', 'H3', 'PRE', 'CODE', 'BR'];
             
             if (!complexBlocks.includes(node.tagName)) {
                 // If it's a simple tag (like <a>, <strong>, <em>), recurse inside it
@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             chars[i].classList.add('jrpg-typewriter-visible');
             
-            // If the "character" is actually a video or image, pause slightly longer
-            const delay = chars[i].tagName === 'IFRAME' ? 50 : 10;
+            // If the "character" is actually a video or image, pause slightly longer, and inbetween for line breaks
+            const delay = chars[i].tagName === 'BR' ? 25 : (chars[i].tagName === 'IFRAME' ? 50 : 10);
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     }
