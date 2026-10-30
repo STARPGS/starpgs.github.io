@@ -461,6 +461,10 @@ hr, hr.has-background-black, hr.has-background-grey {
 
 .small-bar { height: 12px !important; }
 
+.footer-item span {
+  color: var(--accent);
+}
+
 
 .talents-box {
     grid-column: span 2;
