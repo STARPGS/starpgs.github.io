@@ -552,5 +552,18 @@ hr, hr.has-background-black, hr.has-background-grey {
     box-shadow: inset 0 2px 5px var(--border-dark) !important;
 }
 
+/* 1. This fixes the "Container": It stops the JRPG box from centering the whole block of content */
+.box.jrpg-typewriter-container.align-left {
+    text-align: left !important;
+    display: block !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+}
+
+/* 2. This fixes the "Content": It forces paragraphs, headers, and wrappers to align left */
+.box.jrpg-typewriter-container.align-left > * {
+    text-align: left !important;
+    display: block;
+}
 
 
