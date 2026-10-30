@@ -838,23 +838,35 @@ body {
 
 
 
-.navbar-link:hover::before, .button:hover::before, .contact-button:hover::before,
-        .navbar-dropdown .navbar-item:hover::before {
-            content: "▶"; 
-            position: absolute;
-            left: 10px;
-            color: var(--text);
-            font-size: 0.8rem;
-            animation: cursor-blink 1.2s infinite, cursor-drift 0.8s ease-in-out infinite;
-        }
+
+/* OVERRIDE: The Arrow */
+.navbar-link:hover::before, .button:hover::before, .contact-button:hover::before, .navbar-item:hover::before, #backtotop:hover::before {
+    content: "▶" !important; 
+    position: absolute !important;
+    left: 15px !important; 
+    color: var(--text) !important;
+    font-size: 0.8rem !important;
+    animation: cursor-blink 1.2s infinite, cursor-drift 0.8s ease-in-out infinite !important;
+}
+
+/* OVERRIDE: Spacing & Position */
+.navbar-link, .button, .contact-button, .navbar-item, #backtotop {
+    position: relative !important;
+    padding-left: 3rem !important; 
+    padding-right: 3rem !important; 
+}
+
+/* OVERRIDE: Grow Effect (No shadow) */
+.navbar-link:hover, .button:hover, .contact-button:hover, .navbar-item:hover, #backtotop:hover {
+    transform: scale(1.03) !important;
+}
+
+/* OVERRIDE: The Click Press */
+.navbar-link:active, .button:active, .navbar-item:active, #backtotop:active { 
+    transform: scale(0.95) !important; 
+}
+
 
 @keyframes cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        @keyframes cursor-drift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+@keyframes cursor-drift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
 
-        .navbar-link:hover, .button:hover, .contact-button:hover, .box:hover {
-            box-shadow: inset 0 0 0 2px var(--border-dark), 0 0 0 2px var(--bg-base), 0 0 20px var(--accent) !important;
-            transform: scale(1.03);
-            color: #ffffff !important;
-        }
-
-.navbar-link:active, .button:active { transform: scale(0.95); }
