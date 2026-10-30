@@ -863,7 +863,6 @@ body {
     top: 50% !important;
     color: var(--text) !important;
     font-size: 0.8rem !important;
-    /* Animation now handles the vertical centering via translateY(-50%) */
     animation: cursor-blink 1.2s infinite, cursor-drift 0.8s ease-in-out infinite !important;
 }
 
@@ -884,11 +883,12 @@ body {
     transition: none !important;
 }
 
-/* Specific override for dropdown items: pointer cursor and no background change */
+/* Dropdown Items: Force pointer cursor and strip all hover backgrounds */
 .navbar-item.has-text-grey-light:hover {
     cursor: pointer !important;
     background: transparent !important;
     background-color: transparent !important;
+    background-image: none !important;
 }
 
 /* Kills the arrow for items inside the list */
@@ -906,9 +906,13 @@ body {
     transform: none !important;
 }
 
-/* Remove background gradient from navbar-link */
-.navbar-link {
+/* TOTAL GRADIENT REMOVAL: Targets all states of navbar-link */
+.navbar-link, 
+.navbar-link:hover, 
+.navbar-link:active, 
+.navbar-link:focus {
     background: none !important;
+    background-color: transparent !important;
     background-image: none !important;
 }
 
