@@ -844,10 +844,10 @@ body {
 
 
 /* 1. OVERRIDE: Spacing & Position */
-.navbar-item.has-dropdown.is-hoverable, .button, .contact-button, a.navbar-item, #backtotop {
+.navbar-item.has-dropdown.is-hoverable, .button, .contact-button, a.navbar-item, #backtotop, #jrpg-typewriter-skip-button {
     position: relative !important;
-    padding-left: 3rem !important; 
-    padding-right: 3rem !important; 
+    padding-left: 2rem !important; 
+    padding-right: 2rem !important; 
 }
 
 /* 2. OVERRIDE: Grow Effect */
@@ -856,7 +856,7 @@ body {
 }
 
 /* 3. OVERRIDE: The Arrow - Vertically Centered */
-.navbar-item.has-dropdown.is-hoverable:hover::before, .button:hover::before, .contact-button:hover::before, a.navbar-item:hover::before, .navbar-item.has-text-grey-light:hover::before, #backtotop:hover::before, #jrpg-typewriter-skip-button:hover::before {
+.navbar-item.has-dropdown.is-hoverable:hover::before, .button:hover::before, .contact-button:hover::before, a.navbar-item:hover::before, .a.navbar-item.has-text-grey-light:hover::before, #backtotop:hover::before, #jrpg-typewriter-skip-button:hover::before {
     content: "▶" !important; 
     position: absolute !important;
     left: 15px !important; 
@@ -874,7 +874,7 @@ body {
 /* 5. THE DROPDOWN KILL-SWITCH & ITEM OVERRIDES */
 .navbar-dropdown .navbar-item, 
 .navbar-dropdown a, 
-.navbar-item.has-text-grey-light,
+a.navbar-item.has-text-grey-light,
 .navbar-dropdown .navbar-link {
     padding-left: 1.25rem !important; 
     padding-right: 1.25rem !important;
