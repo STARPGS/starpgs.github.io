@@ -856,7 +856,7 @@ body {
 }
 
 /* 3. OVERRIDE: The Arrow - Vertically Centered */
-.navbar-item.has-dropdown.is-hoverable:hover::before, .button:hover::before, .contact-button:hover::before, a.navbar-item:hover::before, a.navbar-item.has-text-grey-light:hover::before, #backtotop:hover::before, #jrpg-typewriter-skip-button:hover::before {
+a.navbar-link:hover::before, .button:hover::before, .contact-button:hover::before, a.navbar-item:hover::before, a.navbar-item.has-text-grey-light:hover::before, #backtotop:hover::before, #jrpg-typewriter-skip-button:hover::before {
     content: "▶" !important; 
     position: absolute !important;
     left: 15px !important; 
@@ -873,7 +873,8 @@ body {
 
 /* 5. THE DROPDOWN KILL-SWITCH & ITEM OVERRIDES */
 .navbar-dropdown .navbar-item, 
-.navbar-dropdown a, 
+.navbar-dropdown a,
+a.navbar-link,
 a.navbar-item.has-text-grey-light,
 .navbar-dropdown .navbar-link {
     transform: none !important;
@@ -885,7 +886,7 @@ a.navbar-item.has-text-grey-light,
 /* Dropdown Items: Force pointer cursor and strip all hover backgrounds */
 .navbar-dropdown .navbar-item::hover, 
 .navbar-dropdown a::hover,
-a.navbar-item.has-text-grey-light,
+a.navbar-item.has-text-grey-light::hover,
 .navbar-dropdown .navbar-link::hover {
     cursor: pointer !important;
     background: transparent !important;
