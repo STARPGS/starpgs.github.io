@@ -885,20 +885,16 @@ a.navbar-item.has-text-grey-light,
 }
 
 /* Dropdown Items: Force pointer cursor and strip all hover backgrounds */
-.navbar-item.has-text-grey-light:hover {
+.navbar-dropdown .navbar-item::hover, 
+.navbar-dropdown a::hover, 
+.navbar-dropdown .navbar-link::hover {
     cursor: pointer !important;
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
 }
 
-/* Kills the arrow for items inside the list */
-.navbar-dropdown .navbar-item::before, 
-.navbar-dropdown a::before, 
-.navbar-dropdown .navbar-link::before {
-    content: none !important;
-    display: none !important;
-}
+
 
 /* Kills the click animation for items inside the list */
 .navbar-dropdown .navbar-item:active, 
