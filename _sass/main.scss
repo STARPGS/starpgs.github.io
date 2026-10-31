@@ -844,7 +844,7 @@ body {
 
 
 /* 1. OVERRIDE: Spacing & Position */
-.navbar-item.has-dropdown.is-hoverable, .button, .contact-button, a.navbar-item, .navbar-dropdown a, #backtotop, #jrpg-typewriter-skip-button {
+.navbar-item.has-dropdown.is-hoverable, .button, .contact-button, a.navbar-item, #backtotop, #jrpg-typewriter-skip-button {
     position: relative !important;
     padding-left: 2.2rem !important; 
     padding-right: 2.2rem !important; 
@@ -876,8 +876,6 @@ body {
 .navbar-dropdown a, 
 a.navbar-item.has-text-grey-light,
 .navbar-dropdown .navbar-link {
-    padding-left: 1.25rem !important; 
-    padding-right: 1.25rem !important;
     transform: none !important;
     background: transparent !important;
     background-color: transparent !important;
@@ -886,7 +884,8 @@ a.navbar-item.has-text-grey-light,
 
 /* Dropdown Items: Force pointer cursor and strip all hover backgrounds */
 .navbar-dropdown .navbar-item::hover, 
-.navbar-dropdown a::hover, 
+.navbar-dropdown a::hover,
+a.navbar-item.has-text-grey-light,
 .navbar-dropdown .navbar-link::hover {
     cursor: pointer !important;
     background: transparent !important;
