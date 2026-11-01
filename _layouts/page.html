@@ -22,7 +22,7 @@ layout: compress
 
                     <!-- This wraps your markdown content in the cobalt retro box automatically -->
                     <div class="container">
-                        <div class="box jrpg-typewriter-container content is-marginless {% if page.text_align == 'left' %}align-left{% endif %}">
+                        <div class="box jrpg-typewriter-container content is-marginless {% if page.text_align == 'left' %}align-left{% endif %}" style="margin: 0 auto !important;">
                             {{ content }}
                         </div>
                     </div>
@@ -37,7 +37,7 @@ layout: compress
 
                     {% else %}
                     <!-- Standard layout for normal posts -->
-                    <div class="content is-marginless {% if page.text_align == 'left' %}has-text-left{% endif %}">
+                    <div class="content is-marginless {% if page.text_align == 'left' %}has-text-left{% endif %}" style="margin: 0 auto !important;">
                         {{ content }}
                     </div>
                 {% endif %}
