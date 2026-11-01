@@ -140,7 +140,6 @@ blockquote {
 }
 
 .navbar.is-black.is-fixed-top .navbar-item,
-.navbar.is-black.is-fixed-top .navbar-link,
 .navbar-link {
     color: var(--text) !important;
     background: linear-gradient(135deg, var(--panel), var(--panel-dark)) !important;
@@ -150,7 +149,7 @@ blockquote {
     margin: 0.25rem;
 }
 
-.navbar.is-black.is-fixed-top .navbar-item:hover,
+.navbar.is-black.is-fixed-top .navbar-item:not(.has-text-grey-light):hover
 .navbar-link:hover {
     color: #ffffff !important;
     background-color: var(--border-dark) !important;
@@ -850,11 +849,17 @@ body {
 
 
 /* 1. OVERRIDE: Spacing & Position */
-.navbar-item.has-dropdown.is-hoverable, .button, .contact-button, a.navbar-link, a.navbar-item, #backtotop, #jrpg-typewriter-skip-button {
+.button, .contact-button, a.navbar-link, a.navbar-item, #backtotop, #jrpg-typewriter-skip-button {
     position: relative !important;
     padding-left: 2.2rem !important; 
     padding-right: 2.2rem !important; 
 }
+
+#contact #contact-button {
+    justify-content:none !important;
+    width: fit-content !important;
+}
+  
 
 /* 2. OVERRIDE: Grow Effect */
 .navbar-item.has-dropdown.is-hoverable:hover, .button:hover, .contact-button:hover, a.navbar-item:hover, #backtotop:hover {
