@@ -14,7 +14,7 @@
             const isLowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
             
             if (isLowMemory || isLowCPU) {
-                // We use documentElement because the <body> has not loaded yet
+                /* We use documentElement because the <body> has not loaded yet */
                 document.documentElement.classList.add('low-specs');
             }
         })();
