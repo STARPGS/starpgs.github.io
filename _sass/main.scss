@@ -7,8 +7,8 @@
     color-scheme: dark;
     --page: #4a76c4;        /* Medium Cobalt (Top Left) */
     --page-dark: #1a2b4d;   /* Deep Navy (Bottom Right) */
-    --panel: rgba(90, 134, 209, 0.6); /* Slightly brighter cobalt for panels */
-    --panel-dark: rgba(36, 59, 99, 0.6); /* Navy for panel depth */
+    --panel: rgba(90, 134, 209, 0.65); /* Slightly brighter cobalt for panels */
+    --panel-dark: rgba(36, 59, 99, 0.65); /* Navy for panel depth */
     --text: #f2f5f8;
     --accent: #b9d5ef;
     --border-light: #e0ecf8;
@@ -942,5 +942,129 @@ a.navbar-item.has-text-grey-light::hover,
     0%, 100% { transform: translate(0, -50%); } 
     50% { transform: translate(6px, -50%); } 
 }
+
+
+/* 1. DEFINE THE ENTRANCE ANIMATIONS */
+@keyframes menuSlideLeft {
+    from { 
+        opacity: 0; 
+        transform: translateX(-50px) skewX(-5deg); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(0) skewX(0deg); 
+    }
+}
+
+@keyframes menuSlideRight {
+    from { 
+        opacity: 0; 
+        transform: translateX(50px) skewX(5deg); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(0) skewX(0deg); 
+    }
+}
+
+@keyframes menuSlideDown {
+    from { 
+        opacity: 0; 
+        transform: translateY(-30px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* 2. APPLY TO THE NAVBAR */
+.navbar.is-black.is-fixed-top {
+    animation: menuSlideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 3. APPLY TO ALL PANELS (CARDS, BOXES, MESSAGES) */
+article, .post, .post-item, .box, .card, .message, 
+.has-background-grey-darker, .has-background-black.has-text-centered.has-text-white {
+    opacity: 0; /* Start invisible so they can fade in */
+    animation: menuSlideLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 4. STAGGERING: This makes them slide in one-by-one instead of all at once */
+/* The 1st panel starts almost immediately */
+article:nth-child(1), .box:nth-child(1), .card:nth-child(1), .message:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+/* The 2nd panel starts slightly later */
+article:nth-child(2), .box:nth-child(2), .card:nth-child(2), .message:nth-child(2) {
+    animation-delay: 0.35s;
+}
+
+/* The 3rd panel starts even later */
+article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+/* 5. SPECIAL DIRECTION: Make items in the right column slide from the right */
+.column.is-right article, 
+.column:last-child .box, 
+.column:last-child .card, 
+.column:last-child .message {
+    animation: menuSlideRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+
+/* 1. OVERRIDE BULMA'S DEFAULT DROPDOWN BEHAVIOR */
+.navbar-item.has-dropdown.is-hoverable .navbar-dropdown {
+    display: block !important; 
+    visibility: hidden !important;
+    opacity: 0 !important;
+    
+    /* START STATE: Shifted up slightly */
+    transform: translateY(-5px); 
+    
+    /* SMOOTH SLIDE: Using a deceleration curve for a "snappy" feel */
+    transition: 
+        opacity 0.3s ease, 
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), 
+        visibility 0.3s;
+    
+    pointer-events: none;
+}
+
+/* 2. THE HOVER STATE (Slide Down & Fade In) */
+.navbar-item.has-dropdown.is-hoverable:hover .navbar-dropdown {
+    visibility: visible !important;
+    opacity: 1 !important;
+    
+    /* END STATE: Slides into original position */
+    transform: translateY(0); 
+    
+    pointer-events: auto;
+}
+
+/* 3. ITEM STAGGER (The AAA Polish) */
+/* The box slides down first, then the items inside ripple in */
+.navbar-dropdown .navbar-item {
+    opacity: 0;
+    transform: translateY(-5px); /* Individual items also slide slightly */
+    transition: 
+        opacity 0.3s ease, 
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.navbar-item.has-dropdown.is-hoverable:hover .navbar-dropdown .navbar-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered timing so they don't all appear at once */
+@for $i from 1 through 20 {
+  .navbar-dropdown .navbar-item:nth-child(#{$i}) { 
+    transition-delay: calc(0.1s * #{$i}); 
+  }
+}
+
 
 
