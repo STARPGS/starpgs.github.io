@@ -832,6 +832,18 @@ body {
     overflow-x: hidden; /* Prevents horizontal scrolling due to cosmic bg */
 }
 
+/* LOW SPEC OVERRIDES */
+html.low-specs .ds-nebula-wrapper {
+    display: none;
+}
+
+html.low-specs .space-system-container {
+    background: #0a0a20; 
+}
+
+
+
+
 /* Temporary Override for ds-background Testing */
 .hero, 
 .about, 
