@@ -5,6 +5,22 @@
     <script src="https://kit.fontawesome.com/6a97161b76.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{% if site.favicon-url %}{{site.favicon-url}}{% else %}{{ 'assets/images/logo.png' | absolute_url }}{% endif %}" type="image/x-icon">
 
+
+/* This hides the high specs content IMMEDIATELY without waiting for JS to prevent flash. */
+    <script>
+        (function() {
+            const isLowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
+            const isLowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+            
+            if (isLowMemory || isLowCPU) {
+                // We use documentElement because the <body> has not loaded yet
+                document.documentElement.classList.add('low-specs');
+            }
+        })();
+    </script>
+
+
+
 {% if page.typewriter_effect %}
     <style>
         /* This hides the content IMMEDIATELY without waiting for JS to prevent flash. */
