@@ -6,8 +6,9 @@
     <link rel="shortcut icon" href="{% if site.favicon-url %}{{site.favicon-url}}{% else %}{{ 'assets/images/logo.png' | absolute_url }}{% endif %}" type="image/x-icon">
 
 
-/* This hides the high specs content IMMEDIATELY without waiting for JS to prevent flash. */
+
     <script>
+        /* This hides the high specs content IMMEDIATELY without waiting for JS to prevent flash. */
         (function() {
             const isLowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
             const isLowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
