@@ -149,7 +149,7 @@ blockquote {
     margin: 0.25rem;
 }
 
-.navbar.is-black.is-fixed-top .navbar-item:not(.has-text-grey-light):hover
+.navbar.is-black.is-fixed-top .navbar-item:not(.has-text-grey-light):hover,
 .navbar-link:hover {
     color: #ffffff !important;
     background-color: var(--border-dark) !important;
