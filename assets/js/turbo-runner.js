@@ -1,28 +1,41 @@
 document.addEventListener("click", (e) => {
-    // Fix: Use .closest("a") so clicking icons/spans inside links still works
     const link = e.target.closest("a");
     if (!link) return;
 
-    const url = link.getAttribute("href");
-    if (!url || url.startsWith("javascript:")) return;
+    const href = link.getAttribute("href");
+    if (!href || href.startsWith("javascript:")) return;
 
-    // 1. HANDLE SCROLL LINKS (#)
-    if (url.startsWith("#")) {
-        e.preventDefault();
-        const targetElement = document.getElementById(url.substring(1));
-        if (targetElement) {
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Create a URL object to easily compare paths and origins
+    // This resolves relative paths (/blog/) into absolute ones (https://site.com/blog/)
+    const targetUrl = new URL(href, window.location.origin);
+    const currentUrl = new URL(window.location.href);
+
+    // 1. SAME-PAGE DETECTION (The Root Page Check)
+    // If the hostname and pathname are the same, we are on the same page
+    const isSamePage = targetUrl.hostname === currentUrl.hostname && 
+                       targetUrl.pathname === currentUrl.pathname;
+
+    if (isSamePage) {
+        // If we are on the same page and there is a hash, smooth scroll
+        if (targetUrl.hash) {
+            e.preventDefault();
+            const targetElement = document.getElementById(targetUrl.hash.substring(1));
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
+        // We return here so that same-page links NEVER trigger the slide animation
         return;
     }
 
-    // INTERNAL LINK DETECTION
-    // Checks if the link is root-relative, baseurl-relative, domain-relative, or a simple path
+    // 2. ROBUST INTERNAL LINK DETECTION
+    // Now we only reach this point if we are actually changing pages
     const isInternal = 
-        url.startsWith("/") || 
-        url.startsWith(window.siteConfig.baseurl) || 
-        url.startsWith(window.siteConfig.url) || 
-        (!url.startsWith("http") && !url.startsWith("//"));
+        href.startsWith("/") || 
+        href.startsWith(window.siteConfig.baseurl) || 
+        href.startsWith(window.siteConfig.url) || 
+        targetUrl.hostname === window.location.hostname ||
+        (!href.startsWith("http") && !href.startsWith("//"));
 
     if (isInternal) {
         e.preventDefault(); 
@@ -35,30 +48,29 @@ document.addEventListener("click", (e) => {
             content.classList.add("slide-out"); 
 
             setTimeout(() => {
-                Turbo.visit(url); 
+                Turbo.visit(href); 
             }, 500); 
         } else {
-            window.location.href = url;
+            window.location.href = href;
         }
     }
-    // If not internal, the browser follows the link normally (External)
 });
 
-// ENTRANCE ANIMATION
 document.addEventListener("turbo:load", () => {
+    // 3. THE ENTRANCE GUARD
+    // This remains critical: if we landed on a page via a hash (different page),
+    // we skip the slide-in so the browser can jump to the anchor.
+    if (window.location.hash) {
+        return; 
+    }
+
     const content = document.getElementById("content-area");
     const curtain = document.getElementById("turbo-curtain");
 
     if (content && curtain) {
         curtain.classList.remove("active");
-
-        // Snap new page to top immediately
         content.classList.add("slide-in-start");
-        
-        // Force reflow to trigger animation
-        void content.offsetWidth;
-
-        // Slide into center view
+        void content.offsetWidth; 
         content.classList.remove("slide-in-start");
     }
 });
