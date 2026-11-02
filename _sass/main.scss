@@ -992,7 +992,7 @@ a.navbar-item.has-text-grey-light::hover,
 @keyframes FadeIn {
     from { 
         opacity: 0; 
-        filter: blur(10px);
+        filter: blur(4px);
     }
     to { 
         opacity: 1; 
@@ -1014,7 +1014,7 @@ a.navbar-item.has-text-grey-light::hover,
 }
 
 /* APPLY SLIDE UP */
-#footer {
+#footer, #credits {
     animation: menuSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
