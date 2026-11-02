@@ -134,7 +134,7 @@ blockquote {
 /* Navigation */
 .navbar.is-black.is-fixed-top {
     color: var(--text) !important;
-    background-color: var(--page) !important;
+    background-color: var(--panel) !important;
     border-bottom: 3px solid var(--border-light) !important;
     box-shadow: inset 0 -2px 0 var(--border-dark) !important;
 }
@@ -158,7 +158,7 @@ blockquote {
 
 .navbar-menu.has-background-black {
     color: var(--text) !important;
-    background-color: var(--page) !important;
+    background-color: transparent !important;
     border: 0 !important;
     box-shadow: none !important;
 }
@@ -944,11 +944,11 @@ a.navbar-item.has-text-grey-light::hover,
 }
 
 
-/* 1. DEFINE THE ENTRANCE ANIMATIONS */
-@keyframes menuSlideLeft {
+/* DEFINE THE ENTRANCE ANIMATIONS */
+@keyframes menuSlideRight {
     from { 
         opacity: 0; 
-        transform: translateX(-50px) skewX(-5deg); 
+        transform: translateX(-50px) skewX(-2deg); 
     }
     to { 
         opacity: 1; 
@@ -956,10 +956,10 @@ a.navbar-item.has-text-grey-light::hover,
     }
 }
 
-@keyframes menuSlideRight {
+@keyframes menuSlideLeft {
     from { 
         opacity: 0; 
-        transform: translateX(50px) skewX(5deg); 
+        transform: translateX(50px) skewX(2deg); 
     }
     to { 
         opacity: 1; 
@@ -978,19 +978,70 @@ a.navbar-item.has-text-grey-light::hover,
     }
 }
 
-/* 2. APPLY TO THE NAVBAR */
-.navbar.is-black.is-fixed-top {
+@keyframes menuSlideUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes FadeIn {
+    from { 
+        opacity: 0; 
+        filter: blur(10px);
+    }
+    to { 
+        opacity: 1; 
+        filter: blur(0);
+    }
+}
+
+
+/* APPLY FADE IN */
+.hero-body {
+    animation: FadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+
+/* APPLY SLIDE DOWN */
+.navbar.is-black.is-fixed-top,
+#title {
     animation: menuSlideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* 3. APPLY TO ALL PANELS (CARDS, BOXES, MESSAGES) */
-article, .post, .post-item, .box, .card, .message, 
-.has-background-grey-darker, .has-background-black.has-text-centered.has-text-white {
-    opacity: 0; /* Start invisible so they can fade in */
+/* APPLY SLIDE UP */
+#footer {
+    animation: menuSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* SPECIAL DIRECTION: Make items in the right column slide to the left */
+.column.is-right article, 
+.column:last-child .box, 
+.column:last-child .card, 
+.column:last-child .message,
+.subtitle.column,
+#search {
     animation: menuSlideLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* 4. STAGGERING: This makes them slide in one-by-one instead of all at once */
+/* APPLY TO ALL PANELS (CARDS, BOXES, MESSAGES) */
+article, .post, .post-item, .box, .card, .message,
+.status-window,
+.level-left,
+.has-background-black.has-text-centered.has-text-white,
+.content.is-marginless.has-text-left,
+.content.has-text-justified,
+#blog-card,
+#post-image {
+    opacity: 0; /* Start invisible so they can fade in */
+    animation: menuSlideRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* STAGGERING: This makes them slide in one-by-one instead of all at once */
 /* The 1st panel starts almost immediately */
 article:nth-child(1), .box:nth-child(1), .card:nth-child(1), .message:nth-child(1) {
     animation-delay: 0.2s;
@@ -1006,16 +1057,8 @@ article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(
     animation-delay: 0.5s;
 }
 
-/* 5. SPECIAL DIRECTION: Make items in the right column slide from the right */
-.column.is-right article, 
-.column:last-child .box, 
-.column:last-child .card, 
-.column:last-child .message {
-    animation: menuSlideRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
 
-
-/* 1. OVERRIDE BULMA'S DEFAULT DROPDOWN BEHAVIOR */
+/* OVERRIDE BULMA'S DEFAULT DROPDOWN BEHAVIOR */
 .navbar-item.has-dropdown.is-hoverable .navbar-dropdown {
     display: block !important; 
     visibility: hidden !important;
@@ -1033,7 +1076,7 @@ article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(
     pointer-events: none;
 }
 
-/* 2. THE HOVER STATE (Slide Down & Fade In) */
+/* THE HOVER STATE (Slide Down & Fade In) */
 .navbar-item.has-dropdown.is-hoverable:hover .navbar-dropdown {
     visibility: visible !important;
     opacity: 1 !important;
@@ -1044,7 +1087,7 @@ article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(
     pointer-events: auto;
 }
 
-/* 3. ITEM STAGGER (The AAA Polish) */
+/* ITEM STAGGER */
 /* The box slides down first, then the items inside ripple in */
 .navbar-dropdown .navbar-item {
     opacity: 0;
