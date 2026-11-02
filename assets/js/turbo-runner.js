@@ -1,22 +1,33 @@
+// ============================================================
+// 1. GLOBAL CLICK HANDLER (Transitions & Menu)
+// ============================================================
 document.addEventListener("click", (e) => {
+    // --- SANDWICH MENU LOGIC ---
+    const burger = e.target.closest(".navbar-burger"); 
+    if (burger) {
+        const targetId = burger.dataset.target;
+        const targetMenu = document.getElementById(targetId);
+        if (targetMenu) {
+            burger.classList.toggle("is-active");
+            targetMenu.classList.toggle("is-active");
+        }
+        return; 
+    }
+
+    // --- JRPG SLIDE OUT LOGIC ---
     const link = e.target.closest("a");
     if (!link) return;
 
     const href = link.getAttribute("href");
     if (!href || href.startsWith("javascript:")) return;
 
-    // Create a URL object to easily compare paths and origins
-    // This resolves relative paths (/blog/) into absolute ones (https://site.com/blog/)
     const targetUrl = new URL(href, window.location.origin);
     const currentUrl = new URL(window.location.href);
 
-    // 1. SAME-PAGE DETECTION (The Root Page Check)
-    // If the hostname and pathname are the same, we are on the same page
     const isSamePage = targetUrl.hostname === currentUrl.hostname && 
                        targetUrl.pathname === currentUrl.pathname;
 
     if (isSamePage) {
-        // If we are on the same page and there is a hash, smooth scroll
         if (targetUrl.hash) {
             e.preventDefault();
             const targetElement = document.getElementById(targetUrl.hash.substring(1));
@@ -24,12 +35,9 @@ document.addEventListener("click", (e) => {
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
-        // We return here so that same-page links NEVER trigger the slide animation
         return;
     }
 
-    // 2. ROBUST INTERNAL LINK DETECTION
-    // Now we only reach this point if we are actually changing pages
     const isInternal = 
         href.startsWith("/") || 
         href.startsWith(window.siteConfig.baseurl) || 
@@ -39,15 +47,13 @@ document.addEventListener("click", (e) => {
 
     if (isInternal) {
         e.preventDefault(); 
-        
         const content = document.getElementById("content-area");
         const curtain = document.getElementById("turbo-curtain");
 
         if (content && curtain) {
             curtain.classList.add("active"); 
             content.classList.add("slide-out"); 
-
-            setTimeout(() => {
+            setTimeout(() => { 
                 Turbo.visit(href); 
             }, 500); 
         } else {
@@ -56,10 +62,11 @@ document.addEventListener("click", (e) => {
     }
 });
 
+// ============================================================
+// 2. PAGE ENTRANCE HANDLER (Slide-In)
+// ============================================================
 document.addEventListener("turbo:load", () => {
-    // 3. THE ENTRANCE GUARD
-    // This remains critical: if we landed on a page via a hash (different page),
-    // we skip the slide-in so the browser can jump to the anchor.
+    // ENTRANCE GUARD: If we land on a hash, skip slide-in to avoid jitter
     if (window.location.hash) {
         return; 
     }
@@ -69,8 +76,10 @@ document.addEventListener("turbo:load", () => {
 
     if (content && curtain) {
         curtain.classList.remove("active");
+
+        // Snap new page to the right, then slide into center
         content.classList.add("slide-in-start");
-        void content.offsetWidth; 
+        void content.offsetWidth; // Force reflow
         content.classList.remove("slide-in-start");
     }
 });
