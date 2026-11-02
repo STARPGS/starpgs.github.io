@@ -1,3 +1,9 @@
+// This runs immediately on the first page load.
+// It marks the site as "loaded" so that the navbar/footer animations 
+// only play once and never again during Turbo navigations.
+document.documentElement.classList.add("site-loaded");
+
+
 // ============================================================
 // 1. GLOBAL CLICK HANDLER (Transitions & Menu)
 // ============================================================
@@ -55,7 +61,7 @@ document.addEventListener("click", (e) => {
             content.classList.add("slide-out"); 
             setTimeout(() => { 
                 Turbo.visit(href); 
-            }, 500); 
+            }, 200); 
         } else {
             window.location.href = href;
         }
