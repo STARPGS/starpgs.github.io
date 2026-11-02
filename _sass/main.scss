@@ -1008,15 +1008,19 @@ a.navbar-item.has-text-grey-light::hover,
 
 
 /* APPLY SLIDE DOWN */
-.navbar.is-black.is-fixed-top,
+/* Only animate navbar if .site-loaded is MISSING from the html tag */
+html:not(.site-loaded) .navbar.is-black.is-fixed-top,
 #title {
     animation: menuSlideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* APPLY SLIDE UP */
-#footer, #credits {
+/* Only animate if .site-loaded is MISSING from the html tag */
+html:not(.site-loaded) #footer, 
+html:not(.site-loaded) #credits {
     animation: menuSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
 
 /* SPECIAL DIRECTION: Make items in the right column slide to the left */
 .column.is-right article, 
@@ -1118,7 +1122,7 @@ article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(
 #turbo-curtain { 
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
     background: black; z-index: 9999; pointer-events: none; 
-    opacity: 0; transition: opacity 0.3s; 
+    opacity: 0; transition: opacity 0.2s; 
 }
 #turbo-curtain.active {
     opacity: 0.5;
