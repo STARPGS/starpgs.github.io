@@ -10,11 +10,15 @@ layout: compress
   {% include ds-background.html %}
 
   {% include navbar.html %}
-  {% include showcase.html %}
-  {% include about.html %}
-  {% include contact.html %}
-  <!--Footer begins here-->
-  {% include footer.html %}
+
+  <main id="content-area">
+    {% include showcase.html %}
+    {% include about.html %}
+    {% include contact.html %}
+    <!--Footer begins here-->
+    {% include footer.html %}
+  </main>
+
 </body>
 <script>
   var navItems = document.getElementsByClassName('navbar-item');
