@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("turbo:load", () => {
     // Target all direct children of the container (works with Jekyll's automatic <p> tags)
     const jrpgTextElements = document.querySelectorAll('.jrpg-typewriter-container > *');
     const jrpgSkipBtn = document.getElementById('jrpg-typewriter-skip-button');
