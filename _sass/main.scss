@@ -1111,3 +1111,28 @@ article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(
 
 
 
+
+
+
+/* The overlay that blocks clicks and dims the screen during transition */
+#turbo-curtain { 
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+    background: black; z-index: 9999; pointer-events: none; 
+    opacity: 0; transition: opacity 0.3s; 
+}
+#turbo-curtain.active {
+    opacity: 0.5;
+    pointer-events: all;
+}
+
+/* The animation states */
+.slide-out { transform: translateY(100vh); }
+.slide-in-start { transform: translateY(-100vh); }
+
+/* The transition logic - apply this ID to your main content wrapper for turbo */
+#content-area { 
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+
+
