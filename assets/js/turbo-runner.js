@@ -27,7 +27,11 @@ document.addEventListener("click", (e) => {
     const href = link.getAttribute("href");
     if (!href || href.startsWith("javascript:")) return;
 
-    const targetUrl = new URL(href, window.location.origin);
+    if (link.dataset.turbo === "false") return;
+
+    const targetUrl = new URL(href, window.location.href);
+    if (targetUrl.protocol !== "http:" && targetUrl.protocol !== "https:") return;
+
     const currentUrl = new URL(window.location.href);
 
     const isSamePage = targetUrl.hostname === currentUrl.hostname && 
