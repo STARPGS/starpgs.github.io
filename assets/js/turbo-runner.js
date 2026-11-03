@@ -82,6 +82,10 @@ document.addEventListener("turbo:load", () => {
         return; 
     }
 
+    // INSTANT SNAP: Force the browser to the top immediately 
+    // before any animations trigger.
+    window.scrollTo(0, 0);
+
     const content = document.getElementById("content-area");
     const curtain = document.getElementById("turbo-curtain");
 
