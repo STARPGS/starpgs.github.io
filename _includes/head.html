@@ -56,17 +56,19 @@
   if (window.__paypalDonateHandlerInstalled) return;
   window.__paypalDonateHandlerInstalled = true;
 
+  /* Inject immediately so it is ready by the time turbo:load fires */
+  if (!window.PayPal) {
+    const script = document.createElement("script");
+    script.src = "https://www.paypalobjects.com/donate/sdk/donate-sdk.js";
+    script.charset = "UTF-8";
+    document.head.appendChild(script);
+  }
+
   document.addEventListener("turbo:load", function () {
     var container = document.getElementById("paypal-donate-button-container");
 
     if (!container || container.dataset.paypalInitialized) return;
-    if (!window.PayPal || !window.PayPal.Donation) {
-      const script = document.createElement("script");
-      script.src = "https://www.paypalobjects.com/donate/sdk/donate-sdk.js";
-      script.charset = "UTF-8";
-      document.head.appendChild(script);
-      return;
-    }
+    if (!window.PayPal || !window.PayPal.Donation) return;
 
     container.dataset.paypalInitialized = "true";
 
