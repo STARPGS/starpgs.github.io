@@ -42,6 +42,9 @@
     </script>
 {% endif %}
 
+<!-- Load jekyll search script in head to prevent turbo issues-->
+<script src="{{site.url}}{{site.baseurl}}/assets/js/simple-jekyll-search.js"></script>
+
 
 <!-- Load paypal script and also run paypal button logic in head to prevent turbo issues-->
 <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
