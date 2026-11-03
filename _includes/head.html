@@ -43,8 +43,46 @@
 {% endif %}
 
 
-<!-- Load paypal script in head to prevent turbo issues-->
+<!-- Load paypal script and also run paypal button logic in head to prevent turbo issues-->
 <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
+
+<script>
+(function() {
+    // We define the function here so it can be reused
+    function renderPayPalButton() {
+        const container = document.getElementById('paypal-donate-button-container');
+        
+        // Only render if the container exists and is empty
+        if (container && container.innerHTML.trim() === "") {
+            // Safety check: make sure the PayPal object is actually loaded
+            if (typeof PayPal !== 'undefined' && PayPal.Donation) {
+                PayPal.Donation.Button({
+                    env: 'production',
+                    hosted_button_id: 'TL2VS53GD5KU2',
+                    image: {
+                        src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+                        title: 'PayPal - The safer, easier way to pay online!',
+                        alt: 'Donate with PayPal button'
+                    },
+                    onComplete: function (params) { },
+                }).render('#paypal-donate-button-container').catch(err => {
+                    // This catches the "Listener already exists" error silently
+                    console.log("PayPal SDK: Handled existing listener.");
+                });
+            } else {
+                // If the SDK isn't ready yet, try again in 100ms
+                setTimeout(renderPayPalButton, 100);
+            }
+        }
+    }
+
+    // RUN ON FIRST LOAD
+    document.addEventListener('DOMContentLoaded', renderPayPalButton);
+
+    // RUN ON TURBO NAVIGATIONS
+    document.addEventListener('turbo:load', renderPayPalButton);
+})();
+</script>
 
 
 <!-- Must run in head but after html loads for turbo to work, so defer-->
