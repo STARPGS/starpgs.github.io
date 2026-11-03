@@ -42,50 +42,62 @@
     </script>
 {% endif %}
 
-
+TL2VS53GD5KU2
 <!-- Load paypal script and also run paypal button logic in head to prevent turbo issues-->
+<script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
+
 <script>
-(function() {
-    /* 1. GLOBAL ERROR FILTER */
-    /* This intercepts errors before they hit the console. */
-    /* If the error contains the Zoid listener error message (which does not affect functionality), we stop it from appearing. */
-    window.addEventListener('error', function (event) {
-    if (event.message && event.message.includes('zoid_allow_delegate_donate_checkout')) {
-        event.preventDefault();
-    }
-    }, true); /* The 'true' here is critical; it enables capturing mode */
+(function () {
+  // Prevent duplicate setup if this inline script runs again.
+  if (window.__paypalDonateSetupInstalled) return;
+  window.__paypalDonateSetupInstalled = true;
 
+  function renderPayPalButton() {
+    const container = document.getElementById("paypal-donate-button-container");
 
-    /* 2. THE RENDER LOGIC */
-    function renderPayPalButton() {
-        const container = document.getElementById('paypal-donate-button-container');
-        
-        if (container && container.innerHTML.trim() === "") {
-            if (typeof PayPal !== 'undefined' && PayPal.Donation) {
-                try {
-                    PayPal.Donation.Button({
-                        env: 'production',
-                        hosted_button_id: 'TL2VS53GD5KU2',
-                        image: {
-                            src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
-                            title: 'PayPal - The safer, easier way to pay online!',
-                            alt: 'Donate with PayPal button'
-                        },
-                        onComplete: function (params) { },
-                    }).render('#paypal-donate-button-container');
-                } catch (err) {
-                    console.log("PayPal SDK: Handled render exception.");
-                }
-            } else {
-                setTimeout(renderPayPalButton, 100);
-            }
-        }
+    if (!container || container.dataset.paypalInitStarted === "true") return;
+    if (container.innerHTML.trim() !== "") return;
+
+    if (!window.PayPal || !window.PayPal.Donation) {
+      console.error("PayPal Donate SDK did not load.");
+      return;
     }
 
-    document.addEventListener('DOMContentLoaded', renderPayPalButton);
-    document.addEventListener('turbo:load', renderPayPalButton);
+    // Set this before rendering, which may be asynchronous.
+    container.dataset.paypalInitStarted = "true";
+
+    try {
+      const result = window.PayPal.Donation.Button({
+        env: "production",
+        hosted_button_id: "YOUR_HOSTED_BUTTON_ID",
+        image: {
+          src: "https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif",
+          title: "PayPal - The safer, easier way to pay online!",
+          alt: "Donate with PayPal button"
+        },
+        onComplete: function (params) {}
+      }).render("#paypal-donate-button-container");
+
+      if (result && typeof result.catch === "function") {
+        result.catch(function (err) {
+          delete container.dataset.paypalInitStarted;
+          console.error("PayPal Donate button failed to render:", err);
+        });
+      }
+    } catch (err) {
+      delete container.dataset.paypalInitStarted;
+      console.error("PayPal Donate button failed to initialize:", err);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderPayPalButton, { once: true });
+  } else {
+    renderPayPalButton();
+  }
 })();
 </script>
+
 
 <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
 
