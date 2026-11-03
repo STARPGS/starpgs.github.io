@@ -18,18 +18,18 @@
   });
 
   document.addEventListener("turbo:render", () => {
-    requestAnimationFrame(() => {
-      const root = document.getElementById("global-bg");
-      if (!root) return;
+  const root = document.getElementById("global-bg");
+  if (!root) return;
 
-      getNodes(root).forEach(el => {
-        const times = savedTimes.get(el);
-        if (!times) return;
+  getNodes(root).forEach(el => {
+    const times = savedTimes.get(el);
+    if (!times) return;
 
-        el.getAnimations().forEach((animation, i) => {
-          if (times[i] != null) animation.currentTime = times[i];
-        });
-      });
+    el.getAnimations().forEach((animation, i) => {
+      if (times[i] != null) animation.currentTime = times[i];
     });
+  });
+});
+
   });
 })();
