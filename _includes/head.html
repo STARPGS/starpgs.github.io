@@ -48,25 +48,53 @@
 
 <script>
 (function () {
-  /* Prevent duplicate setup if this inline script runs again. */
-  if (window.__paypalDonateSetupInstalled) return;
-  window.__paypalDonateSetupInstalled = true;
+  const key = "__paypalDonateSetup";
 
-  function renderPayPalButton() {
+  /* Prevent this setup from running more than once. */
+  if (window[key]) return;
+
+  const state = window[key] = {
+    sdkPromise: null,
+    rendering: false,
+    rendered: false
+  };
+
+  function loadPayPalSDK() {
+    if (window.PayPal && window.PayPal.Donation) {
+      return Promise.resolve();
+    }
+
+    if (state.sdkPromise) return state.sdkPromise;
+
+    state.sdkPromise = new Promise(function (resolve, reject) {
+      const script = document.createElement("script");
+      script.src = "https://www.paypalobjects.com/donate/sdk/donate-sdk.js";
+      script.charset = "UTF-8";
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+
+    return state.sdkPromise;
+  }
+
+  async function renderPayPalButton() {
     const container = document.getElementById("paypal-donate-button-container");
 
-    if (!container || container.dataset.paypalInitStarted === "true") return;
-    if (container.innerHTML.trim() !== "") return;
+    if (!container || state.rendering || state.rendered) return;
 
-    if (!window.PayPal || !window.PayPal.Donation) {
-      console.error("PayPal Donate SDK did not load.");
+    /* The permanent container may already contain the rendered button. */
+    if (container.innerHTML.trim() !== "") {
+      state.rendered = true;
       return;
     }
 
-    /* Set this before rendering, which may be asynchronous. */
+    state.rendering = true;
     container.dataset.paypalInitStarted = "true";
 
     try {
+      await loadPayPalSDK();
+
       const result = window.PayPal.Donation.Button({
         env: "production",
         hosted_button_id: "TL2VS53GD5KU2",
@@ -78,23 +106,17 @@
         onComplete: function (params) {}
       }).render("#paypal-donate-button-container");
 
-      if (result && typeof result.catch === "function") {
-        result.catch(function (err) {
-          delete container.dataset.paypalInitStarted;
-          console.error("PayPal Donate button failed to render:", err);
-        });
-      }
+      await result;
+      state.rendered = true;
     } catch (err) {
       delete container.dataset.paypalInitStarted;
-      console.error("PayPal Donate button failed to initialize:", err);
+      console.error("PayPal Donate button failed:", err);
+    } finally {
+      state.rendering = false;
     }
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", renderPayPalButton, { once: true });
-  } else {
-    renderPayPalButton();
-  }
+  document.addEventListener("turbo:load", renderPayPalButton);
 })();
 </script>
 
