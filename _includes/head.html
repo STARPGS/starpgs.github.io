@@ -40,7 +40,11 @@
         /* This runs immediately to hide text and prevent the "flash" of content */
         document.documentElement.classList.add('jrpg-typewriter-js-enabled');
     </script>
+
 {% endif %}
+
+<script src="{{ '/assets/js/typewriter.js' | relative_url }}" defer></script>
+
 
 <!-- Load jekyll search script in head to prevent turbo issues-->
 <script src="{{site.url}}{{site.baseurl}}/assets/js/simple-jekyll-search.js"></script>
