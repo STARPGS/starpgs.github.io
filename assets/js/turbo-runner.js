@@ -34,15 +34,20 @@ document.addEventListener("click", (e) => {
                        targetUrl.pathname === currentUrl.pathname;
 
     if (isSamePage) {
+        e.preventDefault(); // Stop Turbo from reloading the page in all "same page" cases
+
         if (targetUrl.hash) {
-            e.preventDefault();
             const targetElement = document.getElementById(targetUrl.hash.substring(1));
             if (targetElement) {
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
+        } else {
+            // No hash present, just scroll to the top of the page
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         return;
     }
+
 
     const isInternal = 
         href.startsWith("/") || 
