@@ -37,7 +37,7 @@
         }
     </style>
     <script>
-        // This runs immediately to hide text and prevent the "flash" of content
+        /* This runs immediately to hide text and prevent the "flash" of content */
         document.documentElement.classList.add('jrpg-typewriter-js-enabled');
     </script>
 {% endif %}
@@ -48,13 +48,13 @@
 
 <script>
 (function() {
-    // We define the function here so it can be reused
+    <!-- We define the function here so it can be reused-->
     function renderPayPalButton() {
         const container = document.getElementById('paypal-donate-button-container');
         
-        // Only render if the container exists and is empty
+        <!-- Only render if the container exists and is empty-->
         if (container && container.innerHTML.trim() === "") {
-            // Safety check: make sure the PayPal object is actually loaded
+            <!-- Safety check: make sure the PayPal object is actually loaded-->
             if (typeof PayPal !== 'undefined' && PayPal.Donation) {
                 PayPal.Donation.Button({
                     env: 'production',
@@ -66,20 +66,20 @@
                     },
                     onComplete: function (params) { },
                 }).render('#paypal-donate-button-container').catch(err => {
-                    // This catches the "Listener already exists" error silently
+                    <!-- This catches the "Listener already exists" error silently-->
                     console.log("PayPal SDK: Handled existing listener.");
                 });
             } else {
-                // If the SDK isn't ready yet, try again in 100ms
+                <!-- If the SDK isn't ready yet, try again in 100ms-->
                 setTimeout(renderPayPalButton, 100);
             }
         }
     }
 
-    // RUN ON FIRST LOAD
+    <!-- RUN ON FIRST LOAD-->
     document.addEventListener('DOMContentLoaded', renderPayPalButton);
 
-    // RUN ON TURBO NAVIGATIONS
+    <!-- RUN ON TURBO NAVIGATIONS-->
     document.addEventListener('turbo:load', renderPayPalButton);
 })();
 </script>
