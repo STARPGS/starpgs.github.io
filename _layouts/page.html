@@ -29,10 +29,6 @@ layout: compress
                         </div>
                     </div>
 
-                    <!-- This adds the Skip button only to pages that need it -->
-                    <button id="jrpg-typewriter-skip-button">SHOW ALL</button>
-
-
 
                     {% else %}
                     <!-- Standard layout for normal posts -->
@@ -45,6 +41,10 @@ layout: compress
         </div>
     </section>
 </main>
+{% if page.typewriter_effect %}
+<!-- This adds the Skip button only to pages that need it, floating at page's bottom -->
+<button id="jrpg-typewriter-skip-button">SHOW ALL</button>
+{% endif %}
     <!--Footer begins here-->
     {% include footer.html %}
 </body>
