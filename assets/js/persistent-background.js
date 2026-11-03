@@ -2,7 +2,7 @@
   if (window.bgAnimationRestoreInstalled) return;
   window.bgAnimationRestoreInstalled = true;
 
-  const containerId = "bg-layers";
+  const containerId = "global-bg";
   const savedTimes = new WeakMap();
 
   function getNodes(root) {
