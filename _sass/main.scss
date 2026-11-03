@@ -552,8 +552,8 @@ hr, hr.has-background-black, hr.has-background-grey {
 
 #jrpg-typewriter-skip-button {
     position: fixed !important;
-    bottom: 20px !important;
-    right: 20px !important;
+    bottom: 2rem !important;
+    right: 2rem !important;
     z-index: 9999 !important;
     background: linear-gradient(135deg, var(--panel), var(--panel-dark)) !important;
     color: var(--text) !important;
