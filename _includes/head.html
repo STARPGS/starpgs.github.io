@@ -48,7 +48,7 @@
 
 <script>
 (function () {
-  // Prevent duplicate setup if this inline script runs again.
+  /* Prevent duplicate setup if this inline script runs again. */
   if (window.__paypalDonateSetupInstalled) return;
   window.__paypalDonateSetupInstalled = true;
 
@@ -63,7 +63,7 @@
       return;
     }
 
-    // Set this before rendering, which may be asynchronous.
+    /* Set this before rendering, which may be asynchronous. */
     container.dataset.paypalInitStarted = "true";
 
     try {
