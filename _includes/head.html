@@ -51,8 +51,6 @@
 
 
 <!-- Load paypal script and also run paypal button logic in head to prevent turbo issues-->
-<script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
-
 <script>
 (function () {
   if (window.__paypalDonateHandlerInstalled) return;
@@ -62,7 +60,13 @@
     var container = document.getElementById("paypal-donate-button-container");
 
     if (!container || container.dataset.paypalInitialized) return;
-    if (!window.PayPal || !window.PayPal.Donation) return;
+    if (!window.PayPal || !window.PayPal.Donation) {
+      const script = document.createElement("script");
+      script.src = "https://www.paypalobjects.com/donate/sdk/donate-sdk.js";
+      script.charset = "UTF-8";
+      document.head.appendChild(script);
+      return;
+    }
 
     container.dataset.paypalInitialized = "true";
 
@@ -78,6 +82,7 @@
   });
 })();
 </script>
+
 
 
 
