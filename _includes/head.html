@@ -48,13 +48,21 @@
 
 <script>
 (function() {
-    /* We define the function here so it can be reused */
+    /* 1. GLOBAL ERROR FILTER */
+    /* This intercepts errors before they hit the console. */
+    /* If the error contains the Zoid listener error message (which does not affect functionality), we stop it from appearing. */
+    window.addEventListener('error', function(event) {
+        if (event.message && event.message.indexOf('zoid_allow_delegate_donate_checkout') !== -1) {
+            event.preventDefault();
+            return true;
+        }
+    }, true);
+
+    /* 2. THE RENDER LOGIC */
     function renderPayPalButton() {
         const container = document.getElementById('paypal-donate-button-container');
         
-        /* Only render if the container exists and is empty */
         if (container && container.innerHTML.trim() === "") {
-            /* Safety check: make sure the PayPal object is actually loaded */
             if (typeof PayPal !== 'undefined' && PayPal.Donation) {
                 try {
                     PayPal.Donation.Button({
@@ -68,23 +76,19 @@
                         onComplete: function (params) { },
                     }).render('#paypal-donate-button-container');
                 } catch (err) {
-                    /* This catches the "Listener already exists" error without crashing the script */
                     console.log("PayPal SDK: Handled render exception.");
                 }
             } else {
-                /* If the SDK isn't ready yet, try again in 100ms */
                 setTimeout(renderPayPalButton, 100);
             }
         }
     }
 
-    /* RUN ON FIRST LOAD */
     document.addEventListener('DOMContentLoaded', renderPayPalButton);
-
-    /* RUN ON TURBO NAVIGATIONS */
     document.addEventListener('turbo:load', renderPayPalButton);
 })();
 </script>
+
 
 
 
