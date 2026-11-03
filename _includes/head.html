@@ -94,6 +94,8 @@
 
     try {
       await loadPayPalSDK();
+console.count("PayPal Donation.Button calls");
+console.trace();
 
       const result = window.PayPal.Donation.Button({
         env: "production",
