@@ -866,7 +866,7 @@ body {
 
 /* 1. OVERRIDE: Spacing & Position */
 .button, .contact-button, a.navbar-link, a.navbar-item, #backtotop, #jrpg-typewriter-skip-button {
-    position: relative !important;
+
     padding-left: 2.2rem !important; 
     padding-right: 2.2rem !important; 
 }
@@ -1126,7 +1126,7 @@ article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(
 #turbo-curtain { 
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
     background: black; z-index: 9999; pointer-events: none; 
-    opacity: 0; transition: opacity 0.2s; 
+    opacity: 0; transition: opacity 0.05s; 
 }
 #turbo-curtain.active {
     opacity: 0.5;
