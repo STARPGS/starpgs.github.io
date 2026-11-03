@@ -33,20 +33,31 @@
  	    
 	    <div id="paypal-donate-button-container" class="column has-text-white" data-turbo-permanent></div>
 	    <script>
-	    const container = document.getElementById('paypal-donate-button-container');
-	    if (container && container.innerHTML.trim() === "") {
-  	        PayPal.Donation.Button({
-      		     env: 'production',
-      		     hosted_button_id: 'TL2VS53GD5KU2',
-      		     image: {
-                          src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
-                          title: 'PayPal - The safer, easier way to pay online!',
-                          alt: 'Donate with PayPal button'
-      	            },
-       		    onComplete: function (params) {
-    		    },
-  	        }).render('#paypal-donate-button-container');
-	    }
+	    {
+    // 1. Wrapping in { } prevents the "const redeclaration" error during Turbo loads
+    const container = document.getElementById('paypal-donate-button-container');
+
+    // 2. We use window.paypalDonationLoaded to remember that the button 
+    // was already rendered, even after Turbo changes the page.
+    if (container && !window.paypalDonationLoaded && container.innerHTML.trim() === "") {
+        PayPal.Donation.Button({
+            env: 'production',
+            hosted_button_id: 'TL2VS53GD5KU2',
+            image: {
+                src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+                title: 'PayPal - The safer, easier way to pay online!',
+                alt: 'Donate with PayPal button'
+            },
+            onComplete: function (params) {
+                // your complete logic here
+            },
+        }).render('#paypal-donate-button-container');
+
+        // Mark as loaded so this block never runs again until a full browser refresh
+        window.paypalDonationLoaded = true;
+    }
+}
+
 	    </script>
 
         </div>
