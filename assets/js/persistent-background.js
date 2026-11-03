@@ -2,34 +2,53 @@
   if (window.bgAnimationRestoreInstalled) return;
   window.bgAnimationRestoreInstalled = true;
 
+  const containerId = "bg-layers";
   const savedTimes = new WeakMap();
-  const getNodes = root => [root, ...root.querySelectorAll("*")];
+
+  function getNodes(root) {
+    return [root, ...root.querySelectorAll("*")];
+  }
 
   document.addEventListener("turbo:before-render", () => {
-    const root = document.getElementById("global-bg");
+    const root = document.getElementById(containerId);
     if (!root) return;
+
+    const capturedAt = performance.now();
 
     getNodes(root).forEach(el => {
       const animations = el.getAnimations();
-      if (animations.length) {
-        savedTimes.set(el, animations.map(animation => animation.currentTime));
-      }
+      if (!animations.length) return;
+
+      savedTimes.set(el, {
+        capturedAt,
+        animations: animations.map(animation => ({
+          time: animation.currentTime,
+          rate: animation.playbackRate,
+          state: animation.playState
+        }))
+      });
     });
   });
 
   document.addEventListener("turbo:render", () => {
-  const root = document.getElementById("global-bg");
-  if (!root) return;
+    const root = document.getElementById(containerId);
+    if (!root) return;
 
-  getNodes(root).forEach(el => {
-    const times = savedTimes.get(el);
-    if (!times) return;
+    const restoredAt = performance.now();
 
-    el.getAnimations().forEach((animation, i) => {
-      if (times[i] != null) animation.currentTime = times[i];
+    getNodes(root).forEach(el => {
+      const saved = savedTimes.get(el);
+      if (!saved) return;
+
+      const elapsed = restoredAt - saved.capturedAt;
+
+      el.getAnimations().forEach((animation, i) => {
+        const old = saved.animations[i];
+        if (!old || old.time == null) return;
+
+        const advance = old.state === "running" ? elapsed * old.rate : 0;
+        animation.currentTime = old.time + advance;
+      });
     });
-  });
-});
-
   });
 })();
