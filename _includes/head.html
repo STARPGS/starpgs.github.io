@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="{% if site.favicon-url %}{{site.favicon-url}}{% else %}{{ 'assets/images/logo.png' | absolute_url }}{% endif %}" type="image/x-icon">
 
 <script type="module" src="{{ '/assets/js/turbo.js' | relative_url }}"></script>
-/* 2. Global Config for turbo to pass vars to js  */
+<!-- Global Config for turbo to pass vars to js -->
     <script>
       window.siteConfig = {
         url: "{{ site.url }}",
@@ -56,21 +56,23 @@
         if (container && container.innerHTML.trim() === "") {
             /* Safety check: make sure the PayPal object is actually loaded */
             if (typeof PayPal !== 'undefined' && PayPal.Donation) {
-                PayPal.Donation.Button({
-                    env: 'production',
-                    hosted_button_id: 'TL2VS53GD5KU2',
-                    image: {
-                        src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
-                        title: 'PayPal - The safer, easier way to pay online!',
-                        alt: 'Donate with PayPal button'
-                    },
-                    onComplete: function (params) { },
-                }).render('#paypal-donate-button-container').catch(err => {
-                    /* This catches the "Listener already exists" error silently */
-                    console.log("PayPal SDK: Handled existing listener.");
-                });
+                try {
+                    PayPal.Donation.Button({
+                        env: 'production',
+                        hosted_button_id: 'TL2VS53GD5KU2',
+                        image: {
+                            src: 'https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif',
+                            title: 'PayPal - The safer, easier way to pay online!',
+                            alt: 'Donate with PayPal button'
+                        },
+                        onComplete: function (params) { },
+                    }).render('#paypal-donate-button-container');
+                } catch (err) {
+                    /* This catches the "Listener already exists" error without crashing the script */
+                    console.log("PayPal SDK: Handled render exception.");
+                }
             } else {
-                /* If the SDK isn't ready yet, try again in 100ms--> */
+                /* If the SDK isn't ready yet, try again in 100ms */
                 setTimeout(renderPayPalButton, 100);
             }
         }
@@ -83,6 +85,7 @@
     document.addEventListener('turbo:load', renderPayPalButton);
 })();
 </script>
+
 
 
 <!-- Must run in head but after html loads for turbo to work, so defer-->
