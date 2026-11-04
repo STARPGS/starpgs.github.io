@@ -672,15 +672,12 @@ html {
     height: 100%;
     z-index: -4;
     filter: blur(80px);
-    mix-blend-mode: screen;
-    will-change: transform;
-    backface-visibility: hidden;
 }
 
 /* 2. Nebula cloud */
 .ds-cloud-1 {
     width: 80vw; 
-    height: 50vw;
+    height: 40vw;
     top: 50%; 
     left: 50%;
     transform: translate(-50%, -50%);
