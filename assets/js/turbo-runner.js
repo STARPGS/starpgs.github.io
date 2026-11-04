@@ -70,8 +70,8 @@ document.addEventListener("click", (e) => {
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         } else {
-            // 1. Scroll to top in exactly 200ms
-            fastScrollToTop(200);
+            // 1. Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
 
             // 2. Clean the URL: Remove the hash if it exists
             if (window.location.hash) {
@@ -98,7 +98,8 @@ document.addEventListener("click", (e) => {
         if (content && curtain) {
             curtain.classList.add("active");
             content.classList.add("slide-out"); 
-	    window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Scroll to top in exactly 200ms
+            fastScrollToTop(200);
             setTimeout(() => { 
                 Turbo.visit(href); 
             }, 200); 
