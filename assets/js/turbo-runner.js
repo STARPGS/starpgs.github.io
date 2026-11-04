@@ -113,28 +113,22 @@ document.addEventListener("turbo:load", () => {
         return;
     }
 
-    const curtain = document.getElementById("turbo-curtain");
+    const root = document.documentElement;
+    const originalScrollBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = "auto";
 
-    setTimeout(() => {
-        const root = document.documentElement;
-        const originalScrollBehavior = root.style.scrollBehavior;
-        root.style.scrollBehavior = "auto";
+    const target = window.location.hash
+        ? document.getElementById(window.location.hash.substring(1))
+        : null;
 
-        requestAnimationFrame(() => {
-            const target = window.location.hash
-                ? document.getElementById(window.location.hash.substring(1))
-                : root;
+    if (target) {
+        target.scrollIntoView({ behavior: "auto", block: "start" });
+    } else {
+        window.scrollTo({ top: 0, behavior: "auto" });
+    }
 
-            if (target) {
-                target.scrollIntoView({ behavior: "auto", block: "start" });
-            }
+    root.style.scrollBehavior = originalScrollBehavior;
 
-            if (curtain) {
-                curtain.classList.remove("active");
-            }
-
-            root.style.scrollBehavior = originalScrollBehavior;
-        });
-    }, 20);
+    document.getElementById("turbo-curtain")?.classList.remove("active");
 });
 
