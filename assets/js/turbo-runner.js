@@ -6,6 +6,28 @@ setTimeout(() => {
 }, 100);
 
 
+function fastScrollToTop(duration = 200) {
+    const start = window.pageYOffset;
+    const startTime = performance.now();
+
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Ease-out formula: 1 - (1 - x)^3
+        const ease = 1 - Math.pow(1 - progress, 3);
+        
+        window.scrollTo(0, start * (1 - ease));
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    requestAnimationFrame(animate);
+}
+
+
+
 // ============================================================
 // 1. GLOBAL CLICK HANDLER (Transitions & Menu)
 // ============================================================
@@ -48,8 +70,8 @@ document.addEventListener("click", (e) => {
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         } else {
-            // 1. Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 1. Scroll to top in exactly 200ms
+            fastScrollToTop(200);
 
             // 2. Clean the URL: Remove the hash if it exists
             if (window.location.hash) {
