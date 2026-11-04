@@ -1000,7 +1000,7 @@ a.navbar-item.has-text-grey-light::hover,
 
 
 /* APPLY FADE IN */
-.hero-body {
+html:not(.site-loaded) .hero-body {
     animation: FadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
