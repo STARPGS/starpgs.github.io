@@ -605,9 +605,9 @@ hr, hr.has-background-black, hr.has-background-grey {
     --star-blue: rgba(170, 200, 255, 0.8);
     --star-gold: rgba(255, 220, 150, 0.8);
     --star-red: rgba(255, 150, 150, 0.7);
-    --nebula-purple: rgba(80, 30, 150, 0.25); 
-    --nebula-blue: rgba(30, 60, 160, 0.2);
-    --nebula-gold: rgba(130, 80, 30, 0.15);
+    --nebula-purple: rgba(80, 30, 150, 0.55); 
+    --nebula-blue: rgba(30, 60, 160, 0.5);
+    --nebula-gold: rgba(130, 80, 30, 0.45);
 }
 
 /* Ensure the root background matches to prevent flashing on load */
@@ -655,17 +655,6 @@ html {
     opacity: 0.6;
 }
 
-.ds-nebula-wrapper {
-    position: absolute;
-    top: -25%; left: -25%; width: 150%; height: 150%;
-    z-index: -4;
-    filter: blur(100px);
-    mix-blend-mode: screen;
-    will-change: transform;
-    animation: ds-nebula-rotate 220s linear infinite;
-    backface-visibility: hidden;
-}
-
 
 /* 1. The Wrapper: Slow, constant global rotation */
 .ds-nebula-wrapper {
@@ -677,7 +666,7 @@ html {
     will-change: transform;
     backface-visibility: hidden;
     /* Slow linear rotation to keep the overall movement constant */
-    animation: ds-nebula-rotate 300s linear infinite; 
+    animation: ds-nebula-rotate 170s linear infinite; 
 }
 
 /* 2. The Clouds: Independent, floating drift */
@@ -866,6 +855,10 @@ body {
 
 /* LOW SPEC OVERRIDES */
 html.low-specs .ds-nebula-wrapper {
+    display: none;
+}
+
+html.low-specs .ds-noise-overlay {
     display: none;
 }
 
