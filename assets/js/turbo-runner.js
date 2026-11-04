@@ -1,3 +1,11 @@
+// This runs once per session. 
+// The 100ms delay ensures the "Hard Load" CSS animations actually trigger 
+// before we add the class that blocks them for the rest of the session.
+setTimeout(() => {
+    document.documentElement.classList.add("site-loaded");
+}, 100);
+
+
 // ============================================================
 // 1. GLOBAL CLICK HANDLER (Transitions & Menu)
 // ============================================================
@@ -40,7 +48,15 @@ document.addEventListener("click", (e) => {
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         } else {
+            // 1. Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // 2. Clean the URL: Remove the hash if it exists
+            if (window.location.hash) {
+                // This replaces the current URL in the address bar with the version without the hash
+                const cleanUrl = window.location.pathname + window.location.search;
+                history.replaceState(null, "", cleanUrl);
+            }
         }
         return;
     }
@@ -75,7 +91,6 @@ document.addEventListener("click", (e) => {
 document.addEventListener("turbo:load", () => {
     // FIRST LOAD GUARD: Exit immediately on the very first visit
     if (!document.documentElement.classList.contains("site-loaded")) {
-        document.documentElement.classList.add("site-loaded");
         return;
     }
 
