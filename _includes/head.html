@@ -16,15 +16,31 @@
 
     <script>
         /* This hides the high specs content IMMEDIATELY without waiting for JS to prevent flash. */
-        (function() {
-            const isLowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
-            const isLowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+(function() {
+    let frameCount = 0;
+    let startTime = performance.now();
+    
+    function checkFPS() {
+        frameCount++;
+        let currentTime = performance.now();
+        let elapsed = currentTime - startTime;
+
+        // After 500ms, calculate the FPS
+        if (elapsed >= 500) {
+            let fps = (frameCount * 1000) / elapsed;
             
-            if (isLowMemory || isLowCPU) {
-                /* We use documentElement because the <body> has not loaded yet */
+            // If FPS is below 40, it's a low-end device or struggling
+            if (fps < 40) {
                 document.documentElement.classList.add('low-specs');
             }
-        })();
+        } else {
+            requestAnimationFrame(checkFPS);
+        }
+    }
+
+    requestAnimationFrame(checkFPS);
+})();
+
     </script>
 
 
