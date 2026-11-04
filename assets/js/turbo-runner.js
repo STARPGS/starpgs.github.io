@@ -101,23 +101,28 @@ document.addEventListener("turbo:load", () => {
         curtain.classList.remove("active");
     }
 
-    // INSTANT SNAP: Force the browser to the right spot immediately
-    if (window.location.hash) {
-        const id = window.location.hash.substring(1);
-        const target = document.getElementById(id);
+    // 1. Force instant movement by overriding CSS smooth-scroll
+    const originalScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+
+    // 2. Execute Snap and Animation in the same frame to prevent "fighting"
+    requestAnimationFrame(() => {
+        // UNIFIED SNAP: Use scrollIntoView for both hashes and the top of the page
+        const target = window.location.hash 
+            ? document.getElementById(window.location.hash.substring(1)) 
+            : document.documentElement;
+
         if (target) {
             target.scrollIntoView({ behavior: 'auto', block: 'start' });
         }
-    } else {
-        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    }
 
-    if (content) {
-        // Use requestAnimationFrame to stop the "fight" between the snap and the animation
-        requestAnimationFrame(() => {
+        if (content) {
             content.classList.add("slide-in-start");
-            void content.offsetWidth; 
+            void content.offsetWidth; // Force reflow
             content.classList.remove("slide-in-start");
-        });
-    }
+        }
+
+        // Restore smooth scrolling for the user
+        document.documentElement.style.scrollBehavior = originalScrollBehavior;
+    });
 });
