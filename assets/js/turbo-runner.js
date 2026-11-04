@@ -66,8 +66,8 @@ document.addEventListener("click", (e) => {
         const curtain = document.getElementById("turbo-curtain");
 
         if (content && curtain) {
-            curtain.classList.add("active"); 
-            window.scrollTo(0, 0);
+            curtain.classList.add("active");
+            if (!targetUrl.hash) { window.scrollTo(0, 0); }
             content.classList.add("slide-out"); 
             setTimeout(() => { 
                 Turbo.visit(href); 
@@ -83,7 +83,13 @@ document.addEventListener("click", (e) => {
 // 2. PAGE ENTRANCE HANDLER (Slide-In)
 // ============================================================
 document.addEventListener("turbo:load", () => {
-    // ENTRANCE GUARD: If we land on a hash, skip slide-in to avoid jitter
+    const content = document.getElementById("content-area");
+    const curtain = document.getElementById("turbo-curtain");
+
+    if (curtain) {
+        curtain.classList.remove("active");
+    }
+
     if (window.location.hash) {
         return; 
     }
@@ -92,15 +98,10 @@ document.addEventListener("turbo:load", () => {
     // before any animations trigger.
     window.scrollTo(0, 0);
 
-    const content = document.getElementById("content-area");
-    const curtain = document.getElementById("turbo-curtain");
-
-    if (content && curtain) {
-        curtain.classList.remove("active");
-
+    if (content) {
         // Snap new page to the right, then slide into center
         content.classList.add("slide-in-start");
-        void content.offsetWidth; // Force reflow
+        void content.offsetWidth; 
         content.classList.remove("slide-in-start");
     }
 });
