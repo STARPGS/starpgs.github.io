@@ -67,6 +67,7 @@ document.addEventListener("click", (e) => {
 
         if (content && curtain) {
             curtain.classList.add("active"); 
+            window.scrollTo(0, 0);
             content.classList.add("slide-out"); 
             setTimeout(() => { 
                 Turbo.visit(href); 
@@ -75,6 +76,7 @@ document.addEventListener("click", (e) => {
             window.location.href = href;
         }
     }
+
 });
 
 // ============================================================
