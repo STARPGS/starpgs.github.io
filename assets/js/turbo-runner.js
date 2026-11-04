@@ -101,6 +101,11 @@ document.addEventListener("turbo:load", () => {
         curtain.classList.remove("active");
     }
 
+    if (content) {
+        content.style.visibility = 'hidden';
+    }
+
+
     // 1. Force instant movement by overriding CSS smooth-scroll
     const originalScrollBehavior = document.documentElement.style.scrollBehavior;
     document.documentElement.style.scrollBehavior = 'auto';
@@ -117,6 +122,7 @@ document.addEventListener("turbo:load", () => {
         }
 
         if (content) {
+            content.style.visibility = 'visible';
             content.classList.add("slide-in-start");
             void content.offsetWidth; // Force reflow
             content.classList.remove("slide-in-start");
