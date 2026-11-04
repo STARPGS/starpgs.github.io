@@ -97,6 +97,10 @@ document.addEventListener("turbo:load", () => {
     const content = document.getElementById("content-area");
     const curtain = document.getElementById("turbo-curtain");
 
+    // 1. HIDE IMMEDIATELY: Prevent the 1-frame flash
+    if (content) {
+        content.style.visibility = 'hidden';
+    }
 
     // 2. SETTLE: Give the DOM a moment to stabilize
     setTimeout(() => {
@@ -114,20 +118,18 @@ document.addEventListener("turbo:load", () => {
             }
 
             if (content) {
-
+                // 4. REVEAL: Make visible now that scroll is corrected
+                content.style.visibility = 'visible';
 
                 // 5. ANIMATE & UNLOCK: Double rAF to trigger transition, then kill curtain
-                content.classList.add("slide-in-start");
-                requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        content.classList.remove("slide-in-start");
-                        
-                        // REMOVE CURTAIN LAST: Re-enable clicks only after animation starts
-                        if (curtain) {
-                            curtain.classList.remove("active");
-                        }
-                    });
-                });
+content.classList.add("slide-in-start");
+void content.offsetWidth;
+content.classList.remove("slide-in-start");
+
+if (curtain) {
+    curtain.classList.remove("active");
+}
+
             }
 
             document.documentElement.style.scrollBehavior = originalScrollBehavior;
