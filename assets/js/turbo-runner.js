@@ -89,9 +89,7 @@ document.addEventListener("turbo:load", () => {
         curtain.classList.remove("active");
     }
 
-
-    // INSTANT SNAP: Force the browser to the right spot immediately 
-    // before any animations trigger.
+    // STEP 1: INSTANT SNAP (The Camera Move)
     if (window.location.hash) {
         const id = window.location.hash.substring(1);
         const target = document.getElementById(id);
@@ -102,11 +100,18 @@ document.addEventListener("turbo:load", () => {
         window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
 
-
+    // STEP 2: SLIDE-IN (The Object Move)
     if (content) {
-        // Snap new page to the right, then slide into center
-        content.classList.add("slide-in-start");
-        void content.offsetWidth; 
-        content.classList.remove("slide-in-start");
+        requestAnimationFrame(() => {
+            // Teleport the content to the right instantly
+            content.classList.add("slide-in-start");
+            
+            // Force the browser to acknowledge the teleport
+            void content.offsetWidth; 
+            
+            // Now let it slide back to the center
+            content.classList.remove("slide-in-start");
+        });
     }
 });
+
