@@ -7,22 +7,27 @@ setTimeout(() => {
 
 
 function fastScrollToTop(duration = 200) {
-    const start = window.pageYOffset;
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = "auto";
+
+    const start = window.scrollY;
     const startTime = performance.now();
 
     function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // Ease-out formula: 1 - (1 - x)^3
+        const progress = Math.min((currentTime - startTime) / duration, 1);
         const ease = 1 - Math.pow(1 - progress, 3);
-        
+
         window.scrollTo(0, start * (1 - ease));
 
         if (progress < 1) {
             requestAnimationFrame(animate);
+        } else {
+            root.style.scrollBehavior = previousBehavior;
         }
     }
+
     requestAnimationFrame(animate);
 }
 
