@@ -1133,7 +1133,10 @@ article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(
 .slide-out { transform: translateX(100vw); }
 
 /* Start the new page off-screen to the right */
-.slide-in-start { transform: translateX(-100vw); }
+.slide-in-start {
+    transform: translateX(-100vw);
+    transition: none !important;
+}
 
 
 /* The transition logic - apply this ID to your main content wrapper for turbo */
