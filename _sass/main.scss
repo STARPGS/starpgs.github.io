@@ -378,11 +378,13 @@ hr, hr.has-background-black, hr.has-background-grey {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
+    flex-wrap: wrap; /* Allows items to wrap on very small screens */
+    gap: 10px;
 }
 
 .game-name {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.8rem;
+    font-size: clamp(1.2rem, 5vw, 1.8rem); /* Shrinks on mobile */
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -390,7 +392,7 @@ hr, hr.has-background-black, hr.has-background-grey {
 
 .game-class {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
     color: var(--accent);
 }
 
@@ -401,14 +403,15 @@ hr, hr.has-background-black, hr.has-background-grey {
     padding-top: 15px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap; /* Prevents overlap on mobile */
+    gap: 15px;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.9rem;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
 }
 
-
 .face-container {
-    width: 140px;
-    height: 140px;
+    width: clamp(100px, 25vw, 140px);
+    aspect-ratio: 1 / 1;
     background: var(--surface);
     border: 3px solid var(--border-light);
     border-radius: 4px;
@@ -419,7 +422,7 @@ hr, hr.has-background-black, hr.has-background-grey {
     text-align: center;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
     color: var(--accent);
 }
 
@@ -433,13 +436,13 @@ hr, hr.has-background-black, hr.has-background-grey {
     display: flex;
     justify-content: space-between;
     font-family: 'IBM Plex Mono', monospace;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
 }
 
 .stat-label {
     color: var(--accent);
     font-weight: 500;
 }
-
 
 .retro-progress-container {
     width: 100%;
@@ -459,7 +462,6 @@ hr, hr.has-background-black, hr.has-background-grey {
     transition: width 0.4s ease-in-out;
 }
 
-/* Attribute Grid for the bars (Story, OST, etc.) */
 .attr-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -479,7 +481,7 @@ hr, hr.has-background-black, hr.has-background-grey {
     display: flex;
     justify-content: space-between;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.85rem;
+    font-size: clamp(0.7rem, 2vw, 0.85rem);
 }
 
 .attr-name {
@@ -497,7 +499,7 @@ hr, hr.has-background-black, hr.has-background-grey {
 }
 
 .footer-label {
-    font-size: 0.7rem;
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
     color: var(--accent);
     text-transform: uppercase;
 }
@@ -506,7 +508,7 @@ hr, hr.has-background-black, hr.has-background-grey {
     grid-column: span 2;
     text-align: left;
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.75rem;
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
     line-height: 1.5;
     margin-top: 15px;
 }
@@ -514,7 +516,7 @@ hr, hr.has-background-black, hr.has-background-grey {
 .talents-header {
     color: var(--accent);
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
     display: block;
 }
 
@@ -531,6 +533,15 @@ hr, hr.has-background-black, hr.has-background-grey {
     font-weight: bold;
 }
 
+/* MOBILE LAYOUT ADJUSTMENTS */
+@media (max-width: 480px) {
+    .window-header {
+        flex-direction: column; 
+        align-items: flex-start; 
+        gap: 5px;
+    }
+    
+}
 
 
 
@@ -648,9 +659,9 @@ html {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     z-index: 1;
-    opacity: 0.3; 
+    opacity: 0.07; 
     pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.32' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
     mix-blend-mode: color-dodge; 
     filter: contrast(1000%) brightness(150%); 
 }
