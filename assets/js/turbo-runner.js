@@ -90,13 +90,19 @@ document.addEventListener("turbo:load", () => {
         curtain.classList.remove("active");
     }
 
+
+    // INSTANT SNAP: Force the browser to the right spot immediately 
+    // before any animations trigger.
     if (window.location.hash) {
-        return; 
+        const id = window.location.hash.substring(1);
+        const target = document.getElementById(id);
+        if (target) {
+            target.scrollIntoView({ behavior: 'auto', block: 'start' });
+        }
+    } else {
+        window.scrollTo(0, 0);
     }
 
-    // INSTANT SNAP: Force the browser to the top immediately 
-    // before any animations trigger.
-    window.scrollTo(0, 0);
 
     if (content) {
         // Snap new page to the right, then slide into center
