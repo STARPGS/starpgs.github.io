@@ -1,9 +1,3 @@
-// This runs immediately on the first page load.
-// It marks the site as "loaded" so that the navbar/footer animations 
-// only play once and never again during Turbo navigations.
-document.documentElement.classList.add("site-loaded");
-
-
 // ============================================================
 // 1. GLOBAL CLICK HANDLER (Transitions & Menu)
 // ============================================================
@@ -38,7 +32,7 @@ document.addEventListener("click", (e) => {
                        targetUrl.pathname === currentUrl.pathname;
 
     if (isSamePage) {
-        e.preventDefault(); // Stop Turbo from reloading the page in all "same page" cases
+        e.preventDefault(); 
 
         if (targetUrl.hash) {
             const targetElement = document.getElementById(targetUrl.hash.substring(1));
@@ -46,12 +40,10 @@ document.addEventListener("click", (e) => {
                 targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         } else {
-            // No hash present, just scroll to the top of the page
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         return;
     }
-
 
     const isInternal = 
         href.startsWith("/") || 
@@ -67,7 +59,6 @@ document.addEventListener("click", (e) => {
 
         if (content && curtain) {
             curtain.classList.add("active");
-            if (!targetUrl.hash) { window.scrollTo(0, 0); }
             content.classList.add("slide-out"); 
             setTimeout(() => { 
                 Turbo.visit(href); 
@@ -76,13 +67,18 @@ document.addEventListener("click", (e) => {
             window.location.href = href;
         }
     }
-
 });
 
 // ============================================================
 // 2. PAGE ENTRANCE HANDLER (Slide-In)
 // ============================================================
 document.addEventListener("turbo:load", () => {
+    // FIRST LOAD GUARD: Exit immediately on the very first visit
+    if (!document.documentElement.classList.contains("site-loaded")) {
+        document.documentElement.classList.add("site-loaded");
+        return;
+    }
+
     const content = document.getElementById("content-area");
     const curtain = document.getElementById("turbo-curtain");
 
@@ -90,9 +86,7 @@ document.addEventListener("turbo:load", () => {
         curtain.classList.remove("active");
     }
 
-
-    // INSTANT SNAP: Force the browser to the right spot immediately 
-    // before any animations trigger.
+    // INSTANT SNAP: Force the browser to the right spot immediately
     if (window.location.hash) {
         const id = window.location.hash.substring(1);
         const target = document.getElementById(id);
@@ -100,14 +94,15 @@ document.addEventListener("turbo:load", () => {
             target.scrollIntoView({ behavior: 'auto', block: 'start' });
         }
     } else {
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
 
-
     if (content) {
-        // Snap new page to the right, then slide into center
-        content.classList.add("slide-in-start");
-        void content.offsetWidth; 
-        content.classList.remove("slide-in-start");
+        // Use requestAnimationFrame to stop the "fight" between the snap and the animation
+        requestAnimationFrame(() => {
+            content.classList.add("slide-in-start");
+            void content.offsetWidth; 
+            content.classList.remove("slide-in-start");
+        });
     }
 });
