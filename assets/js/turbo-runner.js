@@ -6,32 +6,6 @@ setTimeout(() => {
 }, 100);
 
 
-function fastScrollToTop(duration = 200) {
-    const root = document.documentElement;
-    const previousBehavior = root.style.scrollBehavior;
-
-    root.style.scrollBehavior = "auto";
-
-    const start = window.scrollY;
-    const startTime = performance.now();
-
-    function animate(currentTime) {
-        const progress = Math.min((currentTime - startTime) / duration, 1);
-        const ease = 1 - Math.pow(1 - progress, 3);
-
-        window.scrollTo(0, start * (1 - ease));
-
-        if (progress < 1) {
-            requestAnimationFrame(animate);
-        } else {
-            root.style.scrollBehavior = previousBehavior;
-        }
-    }
-
-    requestAnimationFrame(animate);
-}
-
-
 
 // ============================================================
 // 1. GLOBAL CLICK HANDLER (Transitions & Menu)
@@ -103,8 +77,6 @@ document.addEventListener("click", (e) => {
         if (content && curtain) {
             curtain.classList.add("active");
             content.classList.add("slide-out"); 
-            // Scroll to top in exactly 200ms
-            fastScrollToTop(200);
             setTimeout(() => { 
                 Turbo.visit(href); 
             }, 200); 
