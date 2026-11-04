@@ -25,11 +25,11 @@
         let currentTime = performance.now();
         let elapsed = currentTime - startTime;
 
-        // After 500ms, calculate the FPS
+        /* After 500ms, calculate the FPS */
         if (elapsed >= 500) {
             let fps = (frameCount * 1000) / elapsed;
             
-            // If FPS is below 40, it's a low-end device or struggling
+            /* If FPS is below 40, it's a low-end device or struggling */
             if (fps < 40) {
                 document.documentElement.classList.add('low-specs');
             }
