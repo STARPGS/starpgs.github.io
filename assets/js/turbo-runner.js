@@ -67,6 +67,7 @@ document.addEventListener("click", (e) => {
 
         if (content && curtain) {
             curtain.classList.add("active");
+            if (!targetUrl.hash) { window.scrollTo(0, 0); }
             content.classList.add("slide-out"); 
             setTimeout(() => { 
                 Turbo.visit(href); 
@@ -89,7 +90,9 @@ document.addEventListener("turbo:load", () => {
         curtain.classList.remove("active");
     }
 
-    // STEP 1: INSTANT SNAP (The Camera Move)
+
+    // INSTANT SNAP: Force the browser to the right spot immediately 
+    // before any animations trigger.
     if (window.location.hash) {
         const id = window.location.hash.substring(1);
         const target = document.getElementById(id);
@@ -97,21 +100,14 @@ document.addEventListener("turbo:load", () => {
             target.scrollIntoView({ behavior: 'auto', block: 'start' });
         }
     } else {
-        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        window.scrollTo(0, 0);
     }
 
-    // STEP 2: SLIDE-IN (The Object Move)
+
     if (content) {
-        requestAnimationFrame(() => {
-            // Teleport the content to the right instantly
-            content.classList.add("slide-in-start");
-            
-            // Force the browser to acknowledge the teleport
-            void content.offsetWidth; 
-            
-            // Now let it slide back to the center
-            content.classList.remove("slide-in-start");
-        });
+        // Snap new page to the right, then slide into center
+        content.classList.add("slide-in-start");
+        void content.offsetWidth; 
+        content.classList.remove("slide-in-start");
     }
 });
-
