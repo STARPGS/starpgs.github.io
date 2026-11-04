@@ -1008,7 +1008,7 @@ a.navbar-item.has-text-grey-light::hover,
 /* APPLY SLIDE DOWN */
 /* Only animate navbar if .site-loaded is MISSING from the html tag */
 html:not(.site-loaded) .navbar.is-black.is-fixed-top,
-#title {
+html:not(.site-loaded) #title {
     animation: menuSlideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
@@ -1019,27 +1019,32 @@ html:not(.site-loaded) #credits {
     animation: menuSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-
 /* SPECIAL DIRECTION: Make items in the right column slide to the left */
-.column.is-right article, 
-.column:last-child .box, 
-.column:last-child .card, 
-.column:last-child .message,
-.subtitle.column,
-#search {
+html:not(.site-loaded) .column.is-right article, 
+html:not(.site-loaded) .column:last-child .box, 
+html:not(.site-loaded) .column:last-child .card, 
+html:not(.site-loaded) .column:last-child .message,
+html:not(.site-loaded) .subtitle.column,
+html:not(.site-loaded) #search {
     animation: menuSlideLeft 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* APPLY TO ALL PANELS (CARDS, BOXES, MESSAGES) */
-article, .post, .post-item, .box, .card, .message,
-.status-window,
-.level-left,
-.has-background-black.has-text-centered.has-text-white,
-.content.is-marginless.has-text-left,
-.content.has-text-justified,
-#blog-card,
-#post-image {
-    opacity: 0; /* Start invisible so they can fade in */
+/* Note: opacity: 0 is also gated so content isn't invisible on subsequent Turbo loads */
+html:not(.site-loaded) article, 
+html:not(.site-loaded) .post, 
+html:not(.site-loaded) .post-item, 
+html:not(.site-loaded) .box, 
+html:not(.site-loaded) .card, 
+html:not(.site-loaded) .message,
+html:not(.site-loaded) .status-window,
+html:not(.site-loaded) .level-left,
+html:not(.site-loaded) .has-background-black.has-text-centered.has-text-white,
+html:not(.site-loaded) .content.is-marginless.has-text-left,
+html:not(.site-loaded) .content.has-text-justified,
+html:not(.site-loaded) #blog-card,
+html:not(.site-loaded) #post-image {
+    opacity: 0; 
     animation: menuSlideRight 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
@@ -1133,10 +1138,7 @@ article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(
 .slide-out { transform: translateX(100vw); }
 
 /* Start the new page off-screen to the right */
-.slide-in-start {
-    transform: translateX(-100vw);
-    transition: none !important;
-}
+.slide-in-start { transform: translateX(-100vw); }
 
 
 /* The transition logic - apply this ID to your main content wrapper for turbo */
