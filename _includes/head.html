@@ -18,16 +18,18 @@
 (() => {
   const root = document.documentElement;
   const FPS_LIMIT = 40;
-  const SLOW_SAMPLES_REQUIRED = 5; /*  Lower than 15, higher than 2 for a balance */
-  const LONG_TASK_THRESHOLD = 10;   /*  More than 2 to avoid "burst" false positives */
+  const SLOW_SAMPLES_REQUIRED = 8; /*  Lower than 15, higher than 2 for a balance */
+  const LONG_TASK_THRESHOLD = 20;   /*  More than 2 to avoid "burst" false positives */
   const SAMPLE_MS = 500;
 
   const cores = navigator.hardwareConcurrency ?? null;
   const ramGiB = navigator.deviceMemory ?? null;
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  /*  THE SHIELD: If these are met, the machine is high-end and should NEVER be flagged by software */
-  const isHighEnd = (cores !== null && cores >= 8) && (ramGiB !== null && ramGiB >= 8);
+  /* SHIELD: If the machine has 8+ cores OR 8GB+ RAM, it is considered high-end. */
+  /* This ensures Firefox users (who have null ramGiB) are shielded by their CPU count. */
+  const isHighEnd = (cores !== null && cores >= 8) || (ramGiB !== null && ramGiB >= 8);
+
 
   const diagnostics = {
     cores,
