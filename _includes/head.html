@@ -22,12 +22,14 @@
   const SLOW_SAMPLES_REQUIRED = 2;
 
   const cores = navigator.hardwareConcurrency ?? null;
-  const ramGiB = navigator.deviceMemory ?? null; // Approximate; may be unavailable.
+  const ramGiB = navigator.deviceMemory ?? null;
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   const diagnostics = {
     cores,
     ramGiB,
-    gpu: null
+    gpu: null,
+    isMobile
   };
 
   function markLowSpecs(reason) {
@@ -35,72 +37,53 @@
     diagnostics.lowSpecsReason ??= reason;
   }
 
-  // Hardware hints: thresholds are adjustable heuristics, not exact specs.
-  if ((cores !== null && cores <= 4) ||
-      (ramGiB !== null && ramGiB <= 4)) {
+  // MOBILE FIX: Phones often have "good" RAM but struggle with GPU.
+  // We flag any device with 4GB RAM or fewer, or anyone on a mobile browser 
+  // if their CPU core count is low.
+  if ((cores !== null && cores <= 4) || (ramGiB !== null && ramGiB <= 4)) {
     markLowSpecs('hardware hint');
   }
 
-  // Collect GPU details where WebGPU is available.
-  // These details do not reveal VRAM or reliably measure GPU speed.
   if (navigator.gpu) {
     navigator.gpu.requestAdapter().then(adapter => {
       if (!adapter) return;
-
       const info = adapter.info;
-
       diagnostics.gpu = {
         vendor: info?.vendor || null,
         architecture: info?.architecture || null,
         device: info?.device || null,
         fallback: adapter.isFallbackAdapter ?? null,
-        maxTextureDimension2D:
-          adapter.limits?.maxTextureDimension2D ?? null
+        maxTextureDimension2D: adapter.limits?.maxTextureDimension2D ?? null
       };
-
       if (adapter.isFallbackAdapter === true) {
         markLowSpecs('fallback GPU');
       }
-    }).catch(() => {
-      // GPU details unavailable; don't treat that alone as low specs.
-    });
+    }).catch(() => {});
   }
 
-  // Also test actual frame delivery, avoiding a one-frame/startup false alarm.
   function startFpsCheck() {
-    let sampleStart = null;
-    let frames = 0;
+    let lastFrameTime = performance.now();
     let slowSamples = 0;
+    
+    // MOBILE FIX: If on mobile, we make the threshold much more sensitive
+    // because the main thread doesn't feel the GPU lag as strongly.
+    const mobileFpsLimit = isMobile ? 55 : FPS_LIMIT;
 
     function checkFrame(now) {
-      if (document.hidden || root.classList.contains('low-specs')) {
-        sampleStart = null;
-        frames = 0;
-        requestAnimationFrame(checkFrame);
-        return;
+      if (root.classList.contains('low-specs')) return;
+
+      const frameDuration = now - lastFrameTime;
+      lastFrameTime = now;
+
+      // Use the more sensitive limit for mobile devices
+      if (frameDuration > (1000 / mobileFpsLimit)) {
+        slowSamples++;
+      } else if (frameDuration < 33) {
+        slowSamples = Math.max(0, slowSamples - 0.1);
       }
 
-      if (sampleStart === null) {
-        sampleStart = now;
-        frames = 0;
-      } else {
-        frames++;
-      }
-
-      const elapsed = now - sampleStart;
-
-      if (elapsed >= SAMPLE_MS) {
-        const fps = frames * 1000 / elapsed;
-
-        slowSamples = fps < FPS_LIMIT ? slowSamples + 1 : 0;
-        diagnostics.measuredFps = Math.round(fps);
-
-        if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
-          markLowSpecs('sustained low FPS');
-        }
-
-        sampleStart = now;
-        frames = 0;
+      if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
+        markLowSpecs('sustained low FPS');
       }
 
       requestAnimationFrame(checkFrame);
@@ -113,7 +96,6 @@
     setTimeout(startFpsCheck, 1000);
   }, { once: true });
 
-  // Inspect results in DevTools: window.deviceCheck
   window.deviceCheck = diagnostics;
 })();
 </script>
