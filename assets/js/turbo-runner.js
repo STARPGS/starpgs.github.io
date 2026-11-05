@@ -11,7 +11,7 @@ setTimeout(() => {
 // 1. GLOBAL CLICK HANDLER (Transitions & Menu)
 // ============================================================
 document.addEventListener("click", (e) => {
-    // --- SANDWICH MENU LOGIC ---
+    // --- SANDWICH MENU TOGGLE ---
     const burger = e.target.closest(".navbar-burger"); 
     if (burger) {
         const targetId = burger.dataset.target;
@@ -22,6 +22,34 @@ document.addEventListener("click", (e) => {
         }
         return; 
     }
+
+    // --- CLOSE MENU ON LINK CLICK ---
+    const navItem = e.target.closest(".navbar-item");
+    if (navItem) {
+        const menu = navItem.closest(".navbar-menu");
+        if (menu && menu.classList.contains("is-active")) {
+            menu.classList.remove("is-active");
+            const burgerToClose = document.querySelector(`.navbar-burger[data-target="${menu.id}"]`);
+            if (burgerToClose) {
+                burgerToClose.classList.remove("is-active");
+            }
+        }
+        return;
+    }
+
+    // --- CLOSE MENU ON OUTSIDE CLICK ---
+    if (!e.target.closest(".navbar-menu") && !e.target.closest(".navbar-burger")) {
+        const activeMenu = document.querySelector(".navbar-menu.is-active");
+        if (activeMenu) {
+            activeMenu.classList.remove("is-active");
+            const burgerToClose = document.querySelector(`.navbar-burger[data-target="${activeMenu.id}"]`);
+            if (burgerToClose) {
+                burgerToClose.classList.remove("is-active");
+            }
+        }
+        return;
+    }
+
 
     // --- JRPG SLIDE OUT LOGIC ---
     const link = e.target.closest("a");
