@@ -10,45 +10,55 @@ setTimeout(() => {
 // ============================================================
 // 1. GLOBAL CLICK HANDLER (Transitions & Menu)
 // ============================================================
-document.addEventListener("click", (e) => {
-    // --- SANDWICH MENU TOGGLE ---
-    const burger = e.target.closest(".navbar-burger"); 
-    if (burger) {
-        const targetId = burger.dataset.target;
-        const targetMenu = document.getElementById(targetId);
-        if (targetMenu) {
-            burger.classList.toggle("is-active");
-            targetMenu.classList.toggle("is-active");
-        }
-        return; 
-    }
+(() => {
+    // This variable is now private to this function bubble
+    let navCloseTimer;
 
-    // --- CLOSE MENU ON LINK CLICK ---
-    const navItem = e.target.closest(".navbar-item");
-    if (navItem) {
-        const menu = navItem.closest(".navbar-menu");
-        if (menu && menu.classList.contains("is-active")) {
-            menu.classList.remove("is-active");
-            const burgerToClose = document.querySelector(`.navbar-burger[data-target="${menu.id}"]`);
-            if (burgerToClose) {
-                burgerToClose.classList.remove("is-active");
+    document.addEventListener("click", (e) => {
+        // --- SANDWICH MENU TOGGLE ---
+        const burger = e.target.closest(".navbar-burger"); 
+        if (burger) {
+            clearTimeout(navCloseTimer); 
+            const targetId = burger.dataset.target;
+            const targetMenu = document.getElementById(targetId);
+            if (targetMenu) {
+                burger.classList.toggle("is-active");
+                targetMenu.classList.toggle("is-active");
             }
+            return; 
         }
-        return;
-    }
 
-    // --- CLOSE MENU ON OUTSIDE CLICK ---
-    if (!e.target.closest(".navbar-menu") && !e.target.closest(".navbar-burger")) {
-        const activeMenu = document.querySelector(".navbar-menu.is-active");
-        if (activeMenu) {
-            activeMenu.classList.remove("is-active");
-            const burgerToClose = document.querySelector(`.navbar-burger[data-target="${activeMenu.id}"]`);
-            if (burgerToClose) {
-                burgerToClose.classList.remove("is-active");
+        // --- CLOSE MENU ON LINK CLICK ---
+        const navItem = e.target.closest(".navbar-item");
+        if (navItem) {
+            const menu = navItem.closest(".navbar-menu");
+            if (menu && menu.classList.contains("is-active")) {
+                const burgerToClose = document.querySelector(`.navbar-burger[data-target="${menu.id}"]`);
+                navCloseTimer = setTimeout(() => {
+                    menu.classList.remove("is-active");
+                    if (burgerToClose) burgerToClose.classList.remove("is-active");
+                }, 300);
             }
+            return;
         }
-        return;
-    }
+
+        // --- CLOSE MENU ON OUTSIDE CLICK ---
+        if (!e.target.closest(".navbar-menu") && !e.target.closest(".navbar-burger")) {
+            clearTimeout(navCloseTimer); 
+            const activeMenu = document.querySelector(".navbar-menu.is-active");
+            if (activeMenu) {
+                activeMenu.classList.remove("is-active");
+                const burgerToClose = document.querySelector(`.navbar-burger[data-target="${activeMenu.id}"]`);
+                if (burgerToClose) burgerToClose.classList.remove("is-active");
+            }
+            return;
+        }
+    });
+
+    // Turbo cleanup: Kill the timer when the page changes
+    document.addEventListener("turbo:load", () => {
+        clearTimeout(navCloseTimer);
+    });
 
 
     // --- JRPG SLIDE OUT LOGIC ---
@@ -112,7 +122,8 @@ document.addEventListener("click", (e) => {
             window.location.href = href;
         }
     }
-});
+})();
+
 
 // ============================================================
 // 2. PAGE ENTRANCE HANDLER (Slide-In)
