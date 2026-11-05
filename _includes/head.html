@@ -48,26 +48,24 @@
   function startPerformanceWatchdog() {
     let slowSamples = 0;
 
-    /* Use PerformanceObserver to detect "Long Tasks" (tasks > 50ms) */
-    /* This is the only way to catch lag that the browser normally hides from rAF */
     try {
       const observer = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          /* Every 'longtask' entry means the site froze for at least 50ms */
           slowSamples++;
           console.log(`Long task detected! Duration: ${Math.round(entry.duration)}ms. Count: ${slowSamples}`);
-
           if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
             markLowSpecs('sustained long tasks');
           }
         }
       });
 
-      /* Observe only 'longtask' entries */
+      /* FIX: Move .observe inside the try block. 
+         This ensures that if 'longtask' is unsupported, it triggers the catch block. */
       observer.observe({ entryTypes: ['longtask'] });
+      console.log("LongTask API active.");
     } catch (e) {
-      /* Fallback for browsers that don't support PerformanceObserver longtask */
-      console.log("LongTask API not supported, using fallback");
+      /* This now catches the 'unsupported entryTypes' error in Firefox/Safari */
+      console.log("LongTask API not supported. Switching to fallback heartbeat.");
       fallbackTick();
     }
   }
@@ -82,9 +80,12 @@
       const delta = now - lastTick;
       lastTick = now;
 
-      if (delta > 100) {
+      /* Use the same logic as the watchdog: detect gaps in the event loop */
+      if (delta > (1000 / FPS_LIMIT)) {
         slowSamples++;
         if (slowSamples >= SLOW_SAMPLES_REQUIRED) markLowSpecs('fallback lag');
+      } else if (delta < 20) {
+        slowSamples = Math.max(0, slowSamples - 1);
       }
       setTimeout(tick, 0);
     }
