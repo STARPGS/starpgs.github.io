@@ -38,8 +38,7 @@
     console.log(`LOW SPECS TRIGGERED: ${reason}`);
   }
 
-  // HARDWARE HAMMER: If it's a phone and has low cores, just trigger it now.
-  // Don't even wait for the lag to start.
+  /* HARDWARE HINTS: Immediate trigger for low-end mobile devices */
   if (isMobile && (cores !== null && cores <= 4)) {
     markLowSpecs('mobile hardware hint');
   } else if ((cores !== null && cores <= 4) || (ramGiB !== null && ramGiB <= 4)) {
@@ -48,43 +47,48 @@
 
   function startPerformanceWatchdog() {
     let slowSamples = 0;
+
+    /* Use PerformanceObserver to detect "Long Tasks" (tasks > 50ms) */
+    /* This is the only way to catch lag that the browser normally hides from rAF */
+    try {
+      const observer = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          /* Every 'longtask' entry means the site froze for at least 50ms */
+          slowSamples++;
+          console.log(`Long task detected! Duration: ${Math.round(entry.duration)}ms. Count: ${slowSamples}`);
+
+          if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
+            markLowSpecs('sustained long tasks');
+          }
+        }
+      });
+
+      /* Observe only 'longtask' entries */
+      observer.observe({ entryTypes: ['longtask'] });
+    } catch (e) {
+      /* Fallback for browsers that don't support PerformanceObserver longtask */
+      console.log("LongTask API not supported, using fallback");
+      fallbackTick();
+    }
+  }
+
+  function fallbackTick() {
     let lastTick = performance.now();
+    let slowSamples = 0;
 
     function tick() {
       if (root.classList.contains('low-specs')) return;
-
       const now = performance.now();
       const delta = now - lastTick;
       lastTick = now;
 
-      // 1. THE PANIC TRIGGER:
-      // If a single frame takes longer than 250ms (4 FPS), trigger immediately.
-      if (delta > 250) {
-        markLowSpecs('critical freeze');
-        return;
-      }
-
-      // 2. THE SUSTAINED LAG TRIGGER:
-      // If the frame is slower than our FPS_LIMIT
-      if (delta > (1000 / FPS_LIMIT)) {
+      if (delta > 100) {
         slowSamples++;
-        console.log(`Lag detected: ${Math.round(delta)}ms. Sample: ${slowSamples}`);
-      } else {
-        // We remove the "0.1" recovery and just reset or leave it.
-        // To be aggressive, we only reset if the frame is perfectly fast.
-        if (delta < 20) slowSamples = Math.max(0, slowSamples - 1);
+        if (slowSamples >= SLOW_SAMPLES_REQUIRED) markLowSpecs('fallback lag');
       }
-
-      if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
-        markLowSpecs('sustained lag');
-      }
-
-      // Use setTimeout instead of rAF. 
-      // This forces the check to go through the event loop queue.
       setTimeout(tick, 0);
     }
-
-    setTimeout(tick, 1000);
+    tick();
   }
 
   window.addEventListener('load', () => {
@@ -94,6 +98,7 @@
   window.deviceCheck = diagnostics;
 })();
 </script>
+
 
 
 
