@@ -18,12 +18,16 @@
 (() => {
   const root = document.documentElement;
   const FPS_LIMIT = 40;
-  const SLOW_SAMPLES_REQUIRED = 2;
+  const SLOW_SAMPLES_REQUIRED = 5; // Lower than 15, higher than 2 for a balance
+  const LONG_TASK_THRESHOLD = 10;   // More than 2 to avoid "burst" false positives
   const SAMPLE_MS = 500;
 
   const cores = navigator.hardwareConcurrency ?? null;
   const ramGiB = navigator.deviceMemory ?? null;
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  // THE SHIELD: If these are met, the machine is high-end and should NEVER be flagged by software
+  const isHighEnd = (cores !== null && cores >= 8) && (ramGiB !== null && ramGiB >= 8);
 
   const diagnostics = {
     cores,
@@ -37,40 +41,37 @@
   window.deviceCheck = diagnostics;
 
   function markLowSpecs(reason) {
-    diagnostics.lowSpecsReason ??= reason;
-    console.log(reason);
+    // The shield prevents software-based triggers from hitting high-end machines
+    if (isHighEnd && (reason === 'sustained low FPS' || reason === 'sustained long tasks')) {
+      return;
+    }
 
+    diagnostics.lowSpecsReason ??= reason;
     if (!root.classList.contains('low-specs')) {
       root.classList.add('low-specs');
     }
   }
 
-  /* Use reported hardware as an initial hint */
+  /* FAST-PATH: Immediate hardware detection */
   if (isMobile && cores !== null && cores <= 4) {
     markLowSpecs('mobile hardware hint');
-  } else if (
-    (cores !== null && cores <= 4) ||
-    (ramGiB !== null && ramGiB <= 4)
-  ) {
+  } else if ((cores !== null && cores <= 4) || (ramGiB !== null && ramGiB <= 4)) {
     markLowSpecs('hardware hint');
   }
 
   function startPerformanceWatchdog() {
-    /* Start the observer only when this browser supports longtask */
-    if (
-      'PerformanceObserver' in window &&
-      PerformanceObserver.supportedEntryTypes?.includes('longtask')
-    ) {
+    /* Only run software watchdog if the machine isn't already flagged by hardware */
+    if (root.classList.contains('low-specs')) return;
+
+    if ('PerformanceObserver' in window && PerformanceObserver.supportedEntryTypes?.includes('longtask')) {
       const observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           diagnostics.longTasks++;
-
-          if (diagnostics.longTasks >= SLOW_SAMPLES_REQUIRED) {
+          if (diagnostics.longTasks >= LONG_TASK_THRESHOLD) {
             markLowSpecs('sustained long tasks');
           }
         }
       });
-
       observer.observe({ entryTypes: ['longtask'] });
     }
 
@@ -87,10 +88,8 @@
         frames = 0;
       } else {
         frames++;
-
         const elapsed = now - sampleStart;
 
-        /* Check FPS once per sample window */
         if (elapsed >= SAMPLE_MS) {
           const fps = frames * 1000 / elapsed;
           diagnostics.measuredFps = Math.round(fps);
@@ -103,21 +102,18 @@
 
           if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
             markLowSpecs('sustained low FPS');
-            return;
+            return; // Stop watching once flagged
           }
 
           sampleStart = now;
           frames = 0;
         }
       }
-
       requestAnimationFrame(checkFrame);
     }
-
     requestAnimationFrame(checkFrame);
   }
 
-  /* Start the check even if the load event has already fired */
   if (document.readyState === 'complete') {
     startPerformanceWatchdog();
   } else {
