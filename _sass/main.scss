@@ -1162,7 +1162,6 @@ article:nth-child(3), .box:nth-child(3), .card:nth-child(3), .message:nth-child(
 #content-area { 
     transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1); 
     will-change: transform;
-    transform: translateZ(0); 
 }
 
 
