@@ -14,34 +14,110 @@
     </script>
     
 
-    <script>
-        /* This hides the high specs content IMMEDIATELY without waiting for JS to prevent flash. */
-(function() {
-    let frameCount = 0;
-    let startTime = performance.now();
-    
-    function checkFPS() {
-        frameCount++;
-        let currentTime = performance.now();
-        let elapsed = currentTime - startTime;
+<script>
+(() => {
+  const root = document.documentElement;
+  const FPS_LIMIT = 40;
+  const SAMPLE_MS = 2000;
+  const SLOW_SAMPLES_REQUIRED = 2;
 
-        /* After 500ms, calculate the FPS */
-        if (elapsed >= 500) {
-            let fps = (frameCount * 1000) / elapsed;
-            
-            /* If FPS is below 40, it's a low-end device or struggling */
-            if (fps < 40) {
-                document.documentElement.classList.add('low-specs');
-            }
-        } else {
-            requestAnimationFrame(checkFPS);
+  const cores = navigator.hardwareConcurrency ?? null;
+  const ramGiB = navigator.deviceMemory ?? null; // Approximate; may be unavailable.
+
+  const diagnostics = {
+    cores,
+    ramGiB,
+    gpu: null
+  };
+
+  function markLowSpecs(reason) {
+    root.classList.add('low-specs');
+    diagnostics.lowSpecsReason ??= reason;
+  }
+
+  // Hardware hints: thresholds are adjustable heuristics, not exact specs.
+  if ((cores !== null && cores <= 4) ||
+      (ramGiB !== null && ramGiB <= 4)) {
+    markLowSpecs('hardware hint');
+  }
+
+  // Collect GPU details where WebGPU is available.
+  // These details do not reveal VRAM or reliably measure GPU speed.
+  if (navigator.gpu) {
+    navigator.gpu.requestAdapter().then(adapter => {
+      if (!adapter) return;
+
+      const info = adapter.info;
+
+      diagnostics.gpu = {
+        vendor: info?.vendor || null,
+        architecture: info?.architecture || null,
+        device: info?.device || null,
+        fallback: adapter.isFallbackAdapter ?? null,
+        maxTextureDimension2D:
+          adapter.limits?.maxTextureDimension2D ?? null
+      };
+
+      if (adapter.isFallbackAdapter === true) {
+        markLowSpecs('fallback GPU');
+      }
+    }).catch(() => {
+      // GPU details unavailable; don't treat that alone as low specs.
+    });
+  }
+
+  // Also test actual frame delivery, avoiding a one-frame/startup false alarm.
+  function startFpsCheck() {
+    let sampleStart = null;
+    let frames = 0;
+    let slowSamples = 0;
+
+    function checkFrame(now) {
+      if (document.hidden || root.classList.contains('low-specs')) {
+        sampleStart = null;
+        frames = 0;
+        requestAnimationFrame(checkFrame);
+        return;
+      }
+
+      if (sampleStart === null) {
+        sampleStart = now;
+        frames = 0;
+      } else {
+        frames++;
+      }
+
+      const elapsed = now - sampleStart;
+
+      if (elapsed >= SAMPLE_MS) {
+        const fps = frames * 1000 / elapsed;
+
+        slowSamples = fps < FPS_LIMIT ? slowSamples + 1 : 0;
+        diagnostics.measuredFps = Math.round(fps);
+
+        if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
+          markLowSpecs('sustained low FPS');
         }
+
+        sampleStart = now;
+        frames = 0;
+      }
+
+      requestAnimationFrame(checkFrame);
     }
 
-    requestAnimationFrame(checkFPS);
-})();
+    requestAnimationFrame(checkFrame);
+  }
 
-    </script>
+  window.addEventListener('load', () => {
+    setTimeout(startFpsCheck, 1000);
+  }, { once: true });
+
+  // Inspect results in DevTools: window.deviceCheck
+  window.deviceCheck = diagnostics;
+})();
+</script>
+
 
 
 
