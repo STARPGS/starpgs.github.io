@@ -45,7 +45,7 @@
     }
   }
 
-  // Hardware hints; browser-reported values can be limited or approximate.
+  /* Use reported hardware as an initial hint */
   if (isMobile && cores !== null && cores <= 4) {
     markLowSpecs('mobile hardware hint');
   } else if (
@@ -56,15 +56,11 @@
   }
 
   function startPerformanceWatchdog() {
-    // Additional signal only; switching does not depend on this API.
+    /* Long tasks are an extra signal; FPS detection runs independently */
     try {
       const observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           diagnostics.longTasks++;
-          console.log(
-            `Long task detected: ${Math.round(entry.duration)}ms; ` +
-            `count: ${diagnostics.longTasks}`
-          );
 
           if (diagnostics.longTasks >= SLOW_SAMPLES_REQUIRED) {
             markLowSpecs('sustained long tasks');
@@ -73,12 +69,10 @@
       });
 
       observer.observe({ entryTypes: ['longtask'] });
-      console.log('LongTask API active.');
     } catch {
-      console.log('LongTask API unavailable; FPS check will still run.');
+      /* Long Task API unavailable */
     }
 
-    // Measure animation-frame callbacks independently of the Long Task API.
     let sampleStart = null;
     let frames = 0;
     let slowSamples = 0;
@@ -95,11 +89,10 @@
 
         const elapsed = now - sampleStart;
 
+        /* Check FPS once per sample window */
         if (elapsed >= SAMPLE_MS) {
           const fps = frames * 1000 / elapsed;
           diagnostics.measuredFps = Math.round(fps);
-
-          console.log(`FPS sample: ${diagnostics.measuredFps}`);
 
           if (fps < FPS_LIMIT) {
             slowSamples++;
@@ -123,15 +116,11 @@
     requestAnimationFrame(checkFrame);
   }
 
-  const startAfterLoad = () => {
-    startPerformanceWatchdog();
-  };
-
-  // Also works if this script runs after the load event has already fired.
+  /* Start the check even if the load event has already fired */
   if (document.readyState === 'complete') {
-    startAfterLoad();
+    startPerformanceWatchdog();
   } else {
-    window.addEventListener('load', startAfterLoad, { once: true });
+    window.addEventListener('load', startPerformanceWatchdog, { once: true });
   }
 })();
 </script>
