@@ -18,7 +18,6 @@
 (() => {
   const root = document.documentElement;
   const FPS_LIMIT = 40;
-  const SAMPLE_MS = 2000;
   const SLOW_SAMPLES_REQUIRED = 2;
 
   const cores = navigator.hardwareConcurrency ?? null;
@@ -28,72 +27,68 @@
   const diagnostics = {
     cores,
     ramGiB,
-    gpu: null,
-    isMobile
+    isMobile,
+    lowSpecsReason: null
   };
 
   function markLowSpecs(reason) {
+    if (root.classList.contains('low-specs')) return;
     root.classList.add('low-specs');
-    diagnostics.lowSpecsReason ??= reason;
+    diagnostics.lowSpecsReason = reason;
+    console.log(`LOW SPECS TRIGGERED: ${reason}`);
   }
 
-  // MOBILE FIX: Phones often have "good" RAM but struggle with GPU.
-  // We flag any device with 4GB RAM or fewer, or anyone on a mobile browser 
-  // if their CPU core count is low.
-  if ((cores !== null && cores <= 4) || (ramGiB !== null && ramGiB <= 4)) {
+  // HARDWARE HAMMER: If it's a phone and has low cores, just trigger it now.
+  // Don't even wait for the lag to start.
+  if (isMobile && (cores !== null && cores <= 4)) {
+    markLowSpecs('mobile hardware hint');
+  } else if ((cores !== null && cores <= 4) || (ramGiB !== null && ramGiB <= 4)) {
     markLowSpecs('hardware hint');
   }
 
-  if (navigator.gpu) {
-    navigator.gpu.requestAdapter().then(adapter => {
-      if (!adapter) return;
-      const info = adapter.info;
-      diagnostics.gpu = {
-        vendor: info?.vendor || null,
-        architecture: info?.architecture || null,
-        device: info?.device || null,
-        fallback: adapter.isFallbackAdapter ?? null,
-        maxTextureDimension2D: adapter.limits?.maxTextureDimension2D ?? null
-      };
-      if (adapter.isFallbackAdapter === true) {
-        markLowSpecs('fallback GPU');
-      }
-    }).catch(() => {});
-  }
-
-  function startFpsCheck() {
-    let lastFrameTime = performance.now();
+  function startPerformanceWatchdog() {
     let slowSamples = 0;
-    
-    // MOBILE FIX: If on mobile, we make the threshold much more sensitive
-    // because the main thread doesn't feel the GPU lag as strongly.
-    const mobileFpsLimit = isMobile ? 55 : FPS_LIMIT;
+    let lastTick = performance.now();
 
-    function checkFrame(now) {
+    function tick() {
       if (root.classList.contains('low-specs')) return;
 
-      const frameDuration = now - lastFrameTime;
-      lastFrameTime = now;
+      const now = performance.now();
+      const delta = now - lastTick;
+      lastTick = now;
 
-      // Use the more sensitive limit for mobile devices
-      if (frameDuration > (1000 / mobileFpsLimit)) {
+      // 1. THE PANIC TRIGGER:
+      // If a single frame takes longer than 250ms (4 FPS), trigger immediately.
+      if (delta > 250) {
+        markLowSpecs('critical freeze');
+        return;
+      }
+
+      // 2. THE SUSTAINED LAG TRIGGER:
+      // If the frame is slower than our FPS_LIMIT
+      if (delta > (1000 / FPS_LIMIT)) {
         slowSamples++;
-      } else if (frameDuration < 33) {
-        slowSamples = Math.max(0, slowSamples - 0.1);
+        console.log(`Lag detected: ${Math.round(delta)}ms. Sample: ${slowSamples}`);
+      } else {
+        // We remove the "0.1" recovery and just reset or leave it.
+        // To be aggressive, we only reset if the frame is perfectly fast.
+        if (delta < 20) slowSamples = Math.max(0, slowSamples - 1);
       }
 
       if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
-        markLowSpecs('sustained low FPS');
+        markLowSpecs('sustained lag');
       }
 
-      requestAnimationFrame(checkFrame);
+      // Use setTimeout instead of rAF. 
+      // This forces the check to go through the event loop queue.
+      setTimeout(tick, 0);
     }
 
-    requestAnimationFrame(checkFrame);
+    setTimeout(tick, 1000);
   }
 
   window.addEventListener('load', () => {
-    setTimeout(startFpsCheck, 1000);
+    startPerformanceWatchdog();
   }, { once: true });
 
   window.deviceCheck = diagnostics;
