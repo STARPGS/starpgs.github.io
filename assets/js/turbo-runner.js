@@ -134,25 +134,10 @@ document.addEventListener("turbo:before-render", (event) => {
 
 document.addEventListener("turbo:render", () => {
     const content = document.getElementById("content-area");
-    if (!content || !content.classList.contains("slide-in-start")) {
-        return;
-    }
+    const curtain = document.getElementById("turbo-curtain");
+    if (!content || !content.classList.contains("slide-in-start")) return;
 
-    // First frame: ensure the browser acknowledges the "start" state
-    requestAnimationFrame(() => {
-        // Second frame: trigger the transition
-        requestAnimationFrame(() => {
-            content.classList.remove("slide-in-start");
-        });
-    });
-});
-
-
-document.addEventListener("turbo:load", () => {
-    if (!document.documentElement.classList.contains("site-loaded")) {
-        return;
-    }
-
+    // === ALL YOUR ORIGINAL HASH/SCROLL LOGIC IS RIGHT HERE ===
     const root = document.documentElement;
     const originalScrollBehavior = root.style.scrollBehavior;
     root.style.scrollBehavior = "auto";
@@ -166,9 +151,24 @@ document.addEventListener("turbo:load", () => {
     } else {
         window.scrollTo({ top: 0, behavior: "auto" });
     }
-
     root.style.scrollBehavior = originalScrollBehavior;
+    // ========================================================
 
-    document.getElementById("turbo-curtain")?.classList.remove("active");
+    // Trigger slide-in animation with lag-protection delay
+    setTimeout(() => {
+        requestAnimationFrame(() => {
+            content.classList.remove("slide-in-start");
+        });
+    }, 50);
+
+    // Remove curtain only when animation physically finishes
+    content.addEventListener("transitionend", () => {
+        curtain?.classList.remove("active");
+    }, { once: true });
+});
+
+document.addEventListener("turbo:load", () => {
+    // Site-loaded check remains as a safety gate for any other logic you add here
+    if (!document.documentElement.classList.contains("site-loaded")) return;
 });
 
