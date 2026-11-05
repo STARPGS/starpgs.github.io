@@ -138,11 +138,15 @@ document.addEventListener("turbo:render", () => {
         return;
     }
 
-    void content.offsetWidth;
+    // First frame: ensure the browser acknowledges the "start" state
     requestAnimationFrame(() => {
-        content.classList.remove("slide-in-start");
+        // Second frame: trigger the transition
+        requestAnimationFrame(() => {
+            content.classList.remove("slide-in-start");
+        });
     });
 });
+
 
 document.addEventListener("turbo:load", () => {
     if (!document.documentElement.classList.contains("site-loaded")) {
