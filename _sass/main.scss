@@ -1022,14 +1022,14 @@ html:not(.site-loaded) .hero-body {
 /* Only animate navbar if .site-loaded is MISSING from the html tag */
 html:not(.site-loaded) .navbar.is-black.is-fixed-top,
 html:not(.site-loaded) #title {
-    animation: menuSlideDown 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: menuSlideDown 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* APPLY SLIDE UP */
 /* Only animate if .site-loaded is MISSING from the html tag */
 html:not(.site-loaded) #footer, 
 html:not(.site-loaded) #credits {
-    animation: menuSlideUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: menuSlideUp 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* SPECIAL DIRECTION: Make items in the right column slide to the left */
@@ -1039,7 +1039,7 @@ html:not(.site-loaded) .column:last-child .card,
 html:not(.site-loaded) .column:last-child .message,
 html:not(.site-loaded) .subtitle.column,
 html:not(.site-loaded) #search {
-    animation: menuSlideLeft 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: menuSlideLeft 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* APPLY TO ALL PANELS (CARDS, BOXES, MESSAGES) */
@@ -1058,7 +1058,7 @@ html:not(.site-loaded) .content.has-text-justified,
 html:not(.site-loaded) #blog-card,
 html:not(.site-loaded) #post-image {
     opacity: 0; 
-    animation: menuSlideRight 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation: menuSlideRight 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* STAGGERING: This makes them slide in one-by-one instead of all at once */
