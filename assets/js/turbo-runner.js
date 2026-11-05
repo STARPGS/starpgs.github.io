@@ -44,7 +44,6 @@ document.addEventListener("click", (e) => {
                 burgerToClose.classList.remove("is-active");
             }
         }
-        return;
     }
 
     // --- CLOSE MENU ON OUTSIDE CLICK ---
@@ -56,8 +55,8 @@ document.addEventListener("click", (e) => {
             if (burgerToClose) {
                 burgerToClose.classList.remove("is-active");
             }
+            return;
         }
-        return;
     }
 
     // --- JRPG SLIDE OUT LOGIC ---
