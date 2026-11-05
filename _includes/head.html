@@ -19,6 +19,7 @@
   const root = document.documentElement;
   const FPS_LIMIT = 40;
   const SLOW_SAMPLES_REQUIRED = 2;
+  const SAMPLE_MS = 1000;
 
   const cores = navigator.hardwareConcurrency ?? null;
   const ramGiB = navigator.deviceMemory ?? null;
@@ -28,78 +29,112 @@
     cores,
     ramGiB,
     isMobile,
+    measuredFps: null,
+    longTasks: 0,
     lowSpecsReason: null
   };
 
+  window.deviceCheck = diagnostics;
+
   function markLowSpecs(reason) {
-    if (root.classList.contains('low-specs')) return;
-    root.classList.add('low-specs');
-    diagnostics.lowSpecsReason = reason;
-    console.log(`LOW SPECS TRIGGERED: ${reason}`);
+    diagnostics.lowSpecsReason ??= reason;
+
+    if (!root.classList.contains('low-specs')) {
+      root.classList.add('low-specs');
+      console.log(`LOW SPECS TRIGGERED: ${reason}`);
+    }
   }
 
-  /* HARDWARE HINTS: Immediate trigger for low-end mobile devices */
-  if (isMobile && (cores !== null && cores <= 4)) {
+  // Hardware hints; browser-reported values can be limited or approximate.
+  if (isMobile && cores !== null && cores <= 4) {
     markLowSpecs('mobile hardware hint');
-  } else if ((cores !== null && cores <= 4) || (ramGiB !== null && ramGiB <= 4)) {
+  } else if (
+    (cores !== null && cores <= 4) ||
+    (ramGiB !== null && ramGiB <= 4)
+  ) {
     markLowSpecs('hardware hint');
   }
 
   function startPerformanceWatchdog() {
-    let slowSamples = 0;
-
+    // Additional signal only; switching does not depend on this API.
     try {
-      const observer = new PerformanceObserver((list) => {
+      const observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
-          slowSamples++;
-          console.log(`Long task detected! Duration: ${Math.round(entry.duration)}ms. Count: ${slowSamples}`);
-          if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
+          diagnostics.longTasks++;
+          console.log(
+            `Long task detected: ${Math.round(entry.duration)}ms; ` +
+            `count: ${diagnostics.longTasks}`
+          );
+
+          if (diagnostics.longTasks >= SLOW_SAMPLES_REQUIRED) {
             markLowSpecs('sustained long tasks');
           }
         }
       });
 
-      /* FIX: Move .observe inside the try block. 
-         This ensures that if 'longtask' is unsupported, it triggers the catch block. */
       observer.observe({ entryTypes: ['longtask'] });
-      console.log("LongTask API active.");
-    } catch (e) {
-      /* This now catches the 'unsupported entryTypes' error in Firefox/Safari */
-      console.log("LongTask API not supported. Switching to fallback heartbeat.");
-      fallbackTick();
+      console.log('LongTask API active.');
+    } catch {
+      console.log('LongTask API unavailable; FPS check will still run.');
     }
-  }
 
-  function fallbackTick() {
-    let lastTick = performance.now();
+    // Measure animation-frame callbacks independently of the Long Task API.
+    let sampleStart = null;
+    let frames = 0;
     let slowSamples = 0;
 
-    function tick() {
-      if (root.classList.contains('low-specs')) return;
-      const now = performance.now();
-      const delta = now - lastTick;
-      lastTick = now;
+    function checkFrame(now) {
+      if (document.hidden) {
+        sampleStart = null;
+        frames = 0;
+      } else if (sampleStart === null) {
+        sampleStart = now;
+        frames = 0;
+      } else {
+        frames++;
 
-      /* Use the same logic as the watchdog: detect gaps in the event loop */
-      if (delta > (1000 / FPS_LIMIT)) {
-        slowSamples++;
-        if (slowSamples >= SLOW_SAMPLES_REQUIRED) markLowSpecs('fallback lag');
-      } else if (delta < 20) {
-        slowSamples = Math.max(0, slowSamples - 1);
+        const elapsed = now - sampleStart;
+
+        if (elapsed >= SAMPLE_MS) {
+          const fps = frames * 1000 / elapsed;
+          diagnostics.measuredFps = Math.round(fps);
+
+          console.log(`FPS sample: ${diagnostics.measuredFps}`);
+
+          if (fps < FPS_LIMIT) {
+            slowSamples++;
+          } else {
+            slowSamples = 0;
+          }
+
+          if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
+            markLowSpecs('sustained low FPS');
+            return;
+          }
+
+          sampleStart = now;
+          frames = 0;
+        }
       }
-      setTimeout(tick, 0);
+
+      requestAnimationFrame(checkFrame);
     }
-    tick();
+
+    requestAnimationFrame(checkFrame);
   }
 
-  window.addEventListener('load', () => {
+  const startAfterLoad = () => {
     startPerformanceWatchdog();
-  }, { once: true });
+  };
 
-  window.deviceCheck = diagnostics;
+  // Also works if this script runs after the load event has already fired.
+  if (document.readyState === 'complete') {
+    startAfterLoad();
+  } else {
+    window.addEventListener('load', startAfterLoad, { once: true });
+  }
 })();
 </script>
-
 
 
 
