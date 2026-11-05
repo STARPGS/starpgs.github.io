@@ -18,15 +18,15 @@
 (() => {
   const root = document.documentElement;
   const FPS_LIMIT = 40;
-  const SLOW_SAMPLES_REQUIRED = 5; // Lower than 15, higher than 2 for a balance
-  const LONG_TASK_THRESHOLD = 10;   // More than 2 to avoid "burst" false positives
+  const SLOW_SAMPLES_REQUIRED = 5; /*  Lower than 15, higher than 2 for a balance */
+  const LONG_TASK_THRESHOLD = 10;   /*  More than 2 to avoid "burst" false positives */
   const SAMPLE_MS = 500;
 
   const cores = navigator.hardwareConcurrency ?? null;
   const ramGiB = navigator.deviceMemory ?? null;
   const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  // THE SHIELD: If these are met, the machine is high-end and should NEVER be flagged by software
+  /*  THE SHIELD: If these are met, the machine is high-end and should NEVER be flagged by software */
   const isHighEnd = (cores !== null && cores >= 8) && (ramGiB !== null && ramGiB >= 8);
 
   const diagnostics = {
@@ -41,7 +41,7 @@
   window.deviceCheck = diagnostics;
 
   function markLowSpecs(reason) {
-    // The shield prevents software-based triggers from hitting high-end machines
+    /*  The shield prevents software-based triggers from hitting high-end machines */
     if (isHighEnd && (reason === 'sustained low FPS' || reason === 'sustained long tasks')) {
       return;
     }
@@ -102,7 +102,7 @@
 
           if (slowSamples >= SLOW_SAMPLES_REQUIRED) {
             markLowSpecs('sustained low FPS');
-            return; // Stop watching once flagged
+            return; /*  Stop watching once flagged */
           }
 
           sampleStart = now;
