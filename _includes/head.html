@@ -38,10 +38,10 @@
 
   function markLowSpecs(reason) {
     diagnostics.lowSpecsReason ??= reason;
+    console.log(reason);
 
     if (!root.classList.contains('low-specs')) {
       root.classList.add('low-specs');
-      console.log(`LOW SPECS TRIGGERED: ${reason}`);
     }
   }
 
@@ -56,8 +56,11 @@
   }
 
   function startPerformanceWatchdog() {
-    /* Long tasks are an extra signal; FPS detection runs independently */
-    try {
+    /* Start the observer only when this browser supports longtask */
+    if (
+      'PerformanceObserver' in window &&
+      PerformanceObserver.supportedEntryTypes?.includes('longtask')
+    ) {
       const observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           diagnostics.longTasks++;
@@ -69,8 +72,6 @@
       });
 
       observer.observe({ entryTypes: ['longtask'] });
-    } catch {
-      /* Long Task API unavailable */
     }
 
     let sampleStart = null;
