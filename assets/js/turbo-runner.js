@@ -10,56 +10,55 @@ setTimeout(() => {
 // ============================================================
 // 1. GLOBAL CLICK HANDLER (Transitions & Menu)
 // ============================================================
-(() => {
-    // This variable is now private to this function bubble
-    let navCloseTimer;
+document.addEventListener("click", (e) => {
+    // --- SANDWICH MENU TOGGLE ---
+    const burger = e.target.closest(".navbar-burger"); 
+    if (burger) {
+        const targetId = burger.dataset.target;
+        const targetMenu = document.getElementById(targetId);
+        if (targetMenu) {
+            burger.classList.toggle("is-active");
+            targetMenu.classList.toggle("is-active");
+        }
+        return; 
+    }
 
-    document.addEventListener("click", (e) => {
-        // --- SANDWICH MENU TOGGLE ---
-        const burger = e.target.closest(".navbar-burger"); 
-        if (burger) {
-            clearTimeout(navCloseTimer); 
-            const targetId = burger.dataset.target;
-            const targetMenu = document.getElementById(targetId);
-            if (targetMenu) {
-                burger.classList.toggle("is-active");
-                targetMenu.classList.toggle("is-active");
-            }
+    // --- CLOSE MENU ON LINK CLICK ---
+    const navItem = e.target.closest(".navbar-item");
+    if (navItem) {
+        // FIX: Check if this item is a dropdown trigger.
+        // It's a trigger if it contains a .navbar-dropdown or is immediately followed by one.
+        const isDropdownTrigger = navItem.querySelector('.navbar-dropdown') || navItem.nextElementSibling?.classList.contains('navbar-dropdown');
+        const isInsideDropdown = navItem.closest('.navbar-dropdown');
+
+        // If it's a trigger and NOT a link inside a dropdown, keep the menu open
+        if (isDropdownTrigger && !isInsideDropdown) {
             return; 
         }
 
-        // --- CLOSE MENU ON LINK CLICK ---
-        const navItem = e.target.closest(".navbar-item");
-        if (navItem) {
-            const menu = navItem.closest(".navbar-menu");
-            if (menu && menu.classList.contains("is-active")) {
-                const burgerToClose = document.querySelector(`.navbar-burger[data-target="${menu.id}"]`);
-                navCloseTimer = setTimeout(() => {
-                    menu.classList.remove("is-active");
-                    if (burgerToClose) burgerToClose.classList.remove("is-active");
-                }, 300);
+        const menu = navItem.closest(".navbar-menu");
+        if (menu && menu.classList.contains("is-active")) {
+            menu.classList.remove("is-active");
+            const burgerToClose = document.querySelector(`.navbar-burger[data-target="${menu.id}"]`);
+            if (burgerToClose) {
+                burgerToClose.classList.remove("is-active");
             }
-            return;
         }
+        return;
+    }
 
-        // --- CLOSE MENU ON OUTSIDE CLICK ---
-        if (!e.target.closest(".navbar-menu") && !e.target.closest(".navbar-burger")) {
-            clearTimeout(navCloseTimer); 
-            const activeMenu = document.querySelector(".navbar-menu.is-active");
-            if (activeMenu) {
-                activeMenu.classList.remove("is-active");
-                const burgerToClose = document.querySelector(`.navbar-burger[data-target="${activeMenu.id}"]`);
-                if (burgerToClose) burgerToClose.classList.remove("is-active");
+    // --- CLOSE MENU ON OUTSIDE CLICK ---
+    if (!e.target.closest(".navbar-menu") && !e.target.closest(".navbar-burger")) {
+        const activeMenu = document.querySelector(".navbar-menu.is-active");
+        if (activeMenu) {
+            activeMenu.classList.remove("is-active");
+            const burgerToClose = document.querySelector(`.navbar-burger[data-target="${activeMenu.id}"]`);
+            if (burgerToClose) {
+                burgerToClose.classList.remove("is-active");
             }
-            return;
         }
-    });
-
-    // Turbo cleanup: Kill the timer when the page changes
-    document.addEventListener("turbo:load", () => {
-        clearTimeout(navCloseTimer);
-    });
-
+        return;
+    }
 
     // --- JRPG SLIDE OUT LOGIC ---
     const link = e.target.closest("a");
@@ -122,8 +121,7 @@ setTimeout(() => {
             window.location.href = href;
         }
     }
-})();
-
+});
 
 // ============================================================
 // 2. PAGE ENTRANCE HANDLER (Slide-In)
